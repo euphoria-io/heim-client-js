@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import { hue } from '../lib/hueHash'
 import Tree from '../lib/Tree'
 
 class ChatThread extends Component {
@@ -22,9 +23,27 @@ class ChatThread extends Component {
     if (!msg) {
       return ''
     }
+    if (msg.content.startsWith('/me ')) {
+      return (
+        <div className="message emote">
+          <span
+            className="nick"
+            style={{color: 'hsl(' + hue(msg.sender.name) + ', 100%, 40%)'}}
+            >
+            {msg.sender.name}
+          </span>
+          {msg.content.substr(4)}
+        </div>
+      )
+    }
     return (
       <div className="message">
-        <div className="nick">{msg.sender.name}</div>
+        <div
+          className="nick"
+          style={{color: 'hsl(' + hue(msg.sender.name) + ', 100%, 40%)'}}
+          >
+          {msg.sender.name}
+        </div>
         <div className="content">{msg.content}</div>
       </div>
     )
