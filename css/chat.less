@@ -1,3 +1,9 @@
+display: flex;
+flex: 1;
+flex-direction: row;
+overflow: hidden;
+padding-top: 10px;
+
 .message {
     margin-bottom: 0.5em;
 }
@@ -10,6 +16,22 @@
   margin-left: 2em;
 }
 
-> .thread > .children > .thread {
-  margin-bottom: 2em;
+> .thread {
+    overflow-y: scroll;
+
+    > .children > .thread {
+        margin-bottom: 2em;
+    }
+}
+
+.user-list {
+    overflow-y: scroll;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    width: 220px;
+
+    .nick {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
