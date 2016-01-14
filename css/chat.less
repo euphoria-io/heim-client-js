@@ -4,8 +4,13 @@ flex-direction: row;
 overflow: hidden;
 padding-top: 10px;
 
+> .thread {
+    flex: 1;
+    overflow-y: scroll;
+}
+
 .message {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.75em;
 }
 
 .nick {
@@ -18,14 +23,6 @@ padding-top: 10px;
 
 .children {
   margin-left: 2em;
-}
-
-> .thread {
-    overflow-y: scroll;
-
-    > .children > .thread {
-        margin-bottom: 2em;
-    }
 }
 
 .user-list {

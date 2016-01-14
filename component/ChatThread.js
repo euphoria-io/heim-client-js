@@ -25,11 +25,11 @@ class ChatThread extends Component {
     }
     if (msg.content.startsWith('/me ')) {
       return (
-        <div className="message emote">
-          <span
-            className="nick"
-            style={{color: 'hsl(' + hue(msg.sender.name) + ', 100%, 40%)'}}
-            >
+        <div
+          className="message emote"
+          style={{color: 'hsl(' + hue(msg.sender.name) + ', 100%, 40%)'}}
+          >
+          <span className="nick">
             {msg.sender.name}
           </span>
           {msg.content.substr(4)}
