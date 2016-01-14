@@ -9,7 +9,7 @@ import renderStaticPage from './site/server'
 import newStore from './site/store'
 
 const store = newStore()
-const ws = new Socket(store, 'https://euphoria.io', 'xkcd')
+const ws = new Socket(store, 'https://euphoria.io', 'test')
 
 const view = (
   <Provider store={store}>

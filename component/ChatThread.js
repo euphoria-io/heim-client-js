@@ -7,21 +7,29 @@ import Tree from '../lib/Tree'
 class ChatThread extends Component {
   render() {
     const { tree, parentId } = this.props
-    const msg = parentId ? tree.nodes.get(parentId) : null
+    const node = parentId ? tree.nodes.get(parentId) : null
     const children = tree.childrenOf(parentId)
-    const msgNode = this.renderMessage(msg)
-    const childrenNode = this.renderChildren(tree, children)
+    const msgElem = node ? this.renderMessage(node.message, node.followups) : null
+    const childrenElem = this.renderChildren(tree, children)
     return (
       <div className="thread">
-        {msgNode}
-        {childrenNode}
+        {msgElem}
+        {childrenElem}
       </div>
     )
   }
 
-  renderMessage(msg) {
+  renderMessage(msg, followups) {
     if (!msg) {
       return ''
+    }
+    let followupElems = null
+    if (followups && followups.size) {
+      followupElems = (
+        <div className="followups">
+          {followups.map(node => this.renderMessage(node.message))}
+        </div>
+      )
     }
     if (msg.content.startsWith('/me ')) {
       return (
@@ -33,6 +41,7 @@ class ChatThread extends Component {
             {msg.sender.name}
           </span>
           {msg.content.substr(4)}
+          {followupElems}
         </div>
       )
     }
@@ -45,6 +54,7 @@ class ChatThread extends Component {
           {msg.sender.name}
         </div>
         <div className="content">{msg.content}</div>
+        {followupElems}
       </div>
     )
   }
