@@ -8,13 +8,44 @@ import Tree from '../lib/Tree'
 class UserList extends Component {
   render() {
     const { users } = this.props
-    
+    const groups = users.groupBy((v, k, i) => /^bot:/.test(v.id) ? 'bots' : 'people')
+
+    function uniqSeq(list) {
+      if (!list) {
+        return Immutable.Map().valueSeq()
+      }
+      let prev
+      return list
+        .sortBy(user => user.name.toLowerCase())
+        .filter((v, k, i) => {
+          if (!v.name) {
+            return false
+          }
+          const key = v.id + '/' + v.name
+          if (prev === key) {
+            return false
+          }
+          prev = key
+          return true
+        })
+        .valueSeq()
+    }
+
     return (
+      <div className="users">
+        {this.renderUserList('people', uniqSeq(groups.get('people')))}
+        {this.renderUserList('bots', uniqSeq(groups.get('bots')))}
+      </div>
+    )
+  }
+
+  renderUserList(kind, users) {
+    return users.size && (
       <div className="user-list">
-        {users
-           .filter(user => user.name)
-           .sortBy(user => user.id.startsWith('bot:') ? '2-' : '1-'+user.name.toLowerCase())
-           .map(user => this.renderUser(user))}
+        <h1>{kind}</h1>
+        <div className={kind}>
+          {users.map(user => this.renderUser(user))}
+        </div>
       </div>
     )
   }
@@ -22,6 +53,7 @@ class UserList extends Component {
   renderUser(user) {
     return (
       <div
+        key={user.session_id}
         className="nick"
         style={{color: 'hsl(' + hue(user.name) + ', 100%, 40%)'}}
         >
