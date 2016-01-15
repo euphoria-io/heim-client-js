@@ -67,4 +67,8 @@ UserList.propTypes = {
   users: PropTypes.instanceOf(Immutable.Map).isRequired,
 }
 
-export default UserList
+function select(state) {
+  return state
+}
+
+export default connect(select)(UserList)

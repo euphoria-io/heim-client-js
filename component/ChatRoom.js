@@ -1,13 +1,24 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import Socket from '../lib/Socket'
 
 import Chat from './Chat'
+import Connection from './Connection'
+import UserList from './UserList'
 
 class ChatRoom extends Component {
   render() {
-    return <Chat ws={this.props.ws} />
+    return (
+      <div className="chat-room">
+        <Connection {...this.props} />
+        <div className="chat-room-content">
+          <Chat {...this.props} />
+          <UserList {...this.props} />
+        </div>
+      </div>
+    )
   }
 }
 
@@ -16,7 +27,7 @@ ChatRoom.propTypes = {
 }
 
 function select(state) {
-  return state
+  return state.chat
 }
 
 export default connect(select)(ChatRoom)

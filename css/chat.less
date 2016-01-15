@@ -1,24 +1,26 @@
-display: flex;
-flex: 1;
-flex-direction: row;
-overflow: hidden;
-padding-top: 10px;
+.chat-room-content {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  overflow: hidden;
+  margin-bottom: 10px;
 
-> .thread {
+  > .thread {
     flex: 1;
     overflow-y: scroll;
+  }
 }
 
 .message {
-    margin-bottom: 0.75em;
+  margin-bottom: 0.75em;
 }
 
 .nick {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .emote .nick::after {
-    content: ' ';
+  content: ' ';
 }
 
 .children {
@@ -26,17 +28,23 @@ padding-top: 10px;
 }
 
 .users {
-    overflow-y: scroll;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    width: 220px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  overflow-y: scroll;
+  width: 220px;
 
-    h1 {
-      font-size: inherit;
-    }
+  h1 {
+    font-size: inherit;
+  }
 
-    .nick {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+  .user-list {
+    flex-shrink: 1;
+  }
+
+  .nick {
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
 }
