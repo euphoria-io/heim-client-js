@@ -41,11 +41,9 @@ class UserList extends Component {
 
   renderUserList(kind, users) {
     return users.size && (
-      <div className="user-list">
+      <div className={"user-list " + kind}>
         <h1>{kind}</h1>
-        <div className={kind}>
-          {users.map(user => this.renderUser(user))}
-        </div>
+        {users.map(user => this.renderUser(user))}
       </div>
     )
   }
@@ -55,8 +53,7 @@ class UserList extends Component {
       <div
         key={user.session_id}
         className="nick"
-        style={{color: 'hsl(' + hue(user.name) + ', 100%, 40%)'}}
-        >
+        style={{color: 'hsl(' + hue(user.name) + ', 100%, 40%)'}}>
         {user.name}
       </div>
     )
