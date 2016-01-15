@@ -32,7 +32,7 @@ class UserList extends Component {
 }
 
 UserList.propTypes = {
-  users: PropTypes.instanceOf(Immutable.List).isRequired,
+  users: PropTypes.instanceOf(Immutable.Map).isRequired,
 }
 
 export default UserList

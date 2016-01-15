@@ -20,6 +20,10 @@ const config = {
     'react-dom/server',
   ],
 
+  devServer: {
+    historyApiFallback: true,
+  },
+
   devtool: 'source-map',
 
   module: {

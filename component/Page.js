@@ -10,7 +10,7 @@ export default function Page({ title, html, scriptHash, cssName }) {
       </head>
       <body>
         <div id="app" dangerouslySetInnerHTML={html} />
-        <script src={'main.' + scriptHash + '.js'} />
+        <script src={'/main.' + scriptHash + '.js'} />
       </body>
     </html>
   )

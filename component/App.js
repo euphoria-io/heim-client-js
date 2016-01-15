@@ -1,18 +1,17 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import { Provider, connect } from 'react-redux'
+import { IndexRoute, Route, Router, RouterContext } from 'react-router'
 
 import Socket from '../lib/Socket'
 
-import Chat from './Chat'
-import Connection from './Connection'
+import ChatRoom from './ChatRoom'
+import Home from './Home'
 
 class App extends Component {
   render() {
-    const { ws } = this.props
     return (
       <div>
-        <Connection ws={ws} />
-        <Chat />
+        {this.props.children && React.cloneElement(this.props.children, {ws: this.props.ws})}
       </div>
     )
   }
@@ -20,6 +19,23 @@ class App extends Component {
 
 App.propTypes = {
   ws: PropTypes.instanceOf(Socket).isRequired,
+}
+
+App.view = function(history, store, ws) {
+  let bindSocket = (Component, props) => {
+    return <Component ws={ws} {...props} />
+  }
+
+  return (
+    <Provider store={store}>
+      <Router history={history} createElement={bindSocket}>
+        <Route path="/" component={App}>
+          <IndexRoute component={Home} />
+          <Route path="/room/:roomName" component={ChatRoom} />
+        </Route>
+      </Router>
+    </Provider>
+  )
 }
 
 function select(state) {
