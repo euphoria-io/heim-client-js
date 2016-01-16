@@ -1,3 +1,5 @@
+export const SWITCH_ROOM = 'SWITCH_ROOM'
+
 export const WS_CONNECTING = 'WS_CONNECTING'
 export const WS_CONNECTED = 'WS_CONNECTED'
 export const WS_DISCONNECTED = 'WS_DISCONNECTED'

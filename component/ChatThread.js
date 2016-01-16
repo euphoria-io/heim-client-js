@@ -72,8 +72,13 @@ ChatThread.propTypes = {
   parentId: PropTypes.string,
 }
 
+/*
 function select(state) {
-  return state
+  const { chatSwitch } = state
+  return chatSwitch.chats.get(chatSwitch.currentRoom)
 }
 
 export default connect(select)(ChatThread)
+*/
+
+export default ChatThread

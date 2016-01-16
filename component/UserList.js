@@ -40,7 +40,7 @@ class UserList extends Component {
   }
 
   renderUserList(kind, users) {
-    return users.size && (
+    return !!users.size && (
       <div className={"user-list " + kind}>
         <h1>{kind}</h1>
         {users.map(user => this.renderUser(user))}
@@ -65,7 +65,8 @@ UserList.propTypes = {
 }
 
 function select(state) {
-  return state
+  const { chatSwitch } = state
+  return chatSwitch.chats.get(chatSwitch.currentRoom)
 }
 
 export default connect(select)(UserList)

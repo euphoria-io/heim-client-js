@@ -3,7 +3,7 @@ import { browserHistory, createMemoryHistory } from 'react-router'
 
 import App from './component/App'
 
-import Socket from './lib/Socket'
+import SocketSwitch from './lib/SocketSwitch'
 
 import renderStaticPage from './site/server'
 import newStore from './site/store'
@@ -12,8 +12,8 @@ const inBrowser = typeof document !== 'undefined'
 const history = inBrowser ? browserHistory : createMemoryHistory()
 
 const store = newStore(history)
-const ws = new Socket(store, 'https://euphoria.io', 'xkcd')
-const view = App.view(history, store, ws)
+const socketSwitch = new SocketSwitch(store, 'https://euphoria.io')
+const view = App.view(history, store, socketSwitch)
 
 if (inBrowser) {
   require('style!./css/main.less')

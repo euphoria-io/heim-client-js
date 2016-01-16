@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import Socket from '../lib/Socket'
+import SocketSwitch from '../lib/SocketSwitch'
 
 import Chat from './Chat'
 import Connection from './Connection'
@@ -10,24 +10,37 @@ import UserList from './UserList'
 
 class ChatRoom extends Component {
   render() {
+    const { chats, currentRoom } = this.props
+    const chat = chats.get(currentRoom)
     return (
       <div className="chat-room">
-        <Connection {...this.props} />
+        <Connection />
         <div className="chat-room-content">
-          <Chat {...this.props} />
-          <UserList {...this.props} />
+          <Chat />
+          <UserList />
         </div>
       </div>
     )
   }
+
+  componentDidMount() {
+    console.log('update chat room')
+    this.props.socketSwitch.select(this.props.currentRoom)
+  }
+
+  componentDidUpdate() {
+    console.log('update chat room')
+    this.props.socketSwitch.select(this.props.currentRoom)
+  }
 }
 
 ChatRoom.propTypes = {
-  ws: PropTypes.instanceOf(Socket).isRequired,
+  currentRoom: PropTypes.string,
+  socketSwitch: PropTypes.instanceOf(SocketSwitch).isRequired,
 }
 
 function select(state) {
-  return state.chat
+  return state.chatSwitch
 }
 
 export default connect(select)(ChatRoom)

@@ -2,31 +2,28 @@ import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import Socket from '../lib/Socket'
-
 class Connection extends Component {
   render() {
-    const { dispatch, connection, ws } = this.props
-    if (connection.socketState === 'disconnected') {
-      ws.connect()
-    }
+    const { socketState } = this.props
     return (
       <div className="connection">
-        <span className="connection-state">{connection.socketState}</span>
+        <span className="connection-state">{socketState}</span>
       </div>
     )
   }
 }
 
 Connection.propTypes = {
-  connection: PropTypes.shape({
-    socketState: PropTypes.string.isRequired,
-  }).isRequired,
-  ws: PropTypes.instanceOf(Socket).isRequired,
+  socketState: PropTypes.string.isRequired,
 }
 
 function select(state) {
-  return state.session
+  const { chatSwitch } = state
+  const chat = chatSwitch.chats.get(chatSwitch.currentRoom)
+  if (!chat) {
+    return {socketState: 'disconnected'}
+  }
+  return chat
 }
 
 export default connect(select)(Connection)

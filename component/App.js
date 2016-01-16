@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Provider, connect } from 'react-redux'
 import { IndexRoute, Route, Router, RouterContext } from 'react-router'
 
-import Socket from '../lib/Socket'
+import SocketSwitch from '../lib/SocketSwitch'
 
 import ChatRoom from './ChatRoom'
 import Home from './Home'
@@ -18,12 +18,12 @@ class App extends Component {
 }
 
 App.propTypes = {
-  ws: PropTypes.instanceOf(Socket).isRequired,
+  socketSwitch: PropTypes.instanceOf(SocketSwitch).isRequired,
 }
 
-App.view = function(history, store, ws) {
+App.view = function(history, store, socketSwitch) {
   let bindSocket = (Component, props) => {
-    return <Component ws={ws} {...props} />
+    return <Component socketSwitch={socketSwitch} {...props} />
   }
 
   return (

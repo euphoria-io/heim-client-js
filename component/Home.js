@@ -4,9 +4,11 @@ import { Link } from 'react-router'
 export default class Home extends Component {
   render() {
     return (
-      <div className="home">
-        Check out a <Link to="/room/xkcd">chat room</Link>.
-      </div>
+      <ul className="home">
+        <li><Link to="/room/pub/">&amp;pub</Link></li>
+        <li><Link to="/room/test/">&amp;test</Link></li>
+        <li><Link to="/room/xkcd/">&amp;xkcd</Link></li>
+      </ul>
     )
   }
 }

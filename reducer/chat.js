@@ -1,15 +1,15 @@
 import Immutable from 'immutable'
 
-import { WS_MESSAGE_RECEIVED } from '../const'
-import Tree from '../lib/Tree'
-
-const initialState = {
-  tree: new Tree(),
-  users: new Immutable.Map(),
-}
+import { WS_CONNECTING, WS_CONNECTED, WS_DISCONNECTED, WS_MESSAGE_RECEIVED } from '../const'
 
 export default function chat(state=initialState, action) {
   switch (action.type) {
+    case WS_CONNECTING:
+      return {...state, socketState: 'connecting'}
+    case WS_CONNECTED:
+      return {...state, socketState: 'connected'}
+    case WS_DISCONNECTED:
+      return {...state, socketState: 'disconnected'}
     case WS_MESSAGE_RECEIVED:
       return messageReceived(state, action.packet)
     default:
