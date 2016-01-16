@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { hue } from '../lib/hueHash'
+import { nickFgColor } from '../lib/nick'
 import Tree from '../lib/Tree'
 
 class UserList extends Component {
@@ -53,7 +53,8 @@ class UserList extends Component {
       <div
         key={user.session_id}
         className="nick"
-        style={{color: 'hsl(' + hue(user.name) + ', 100%, 40%)'}}>
+        style={nickFgColor(user.name)}
+        >
         {user.name}
       </div>
     )

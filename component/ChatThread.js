@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
-import { hue } from '../lib/hueHash'
+import { nickFgColor } from '../lib/nick'
 import ScrollFollower from '../lib/ScrollFollower'
 import Tree from '../lib/Tree'
 
@@ -30,7 +30,7 @@ class ChatThread extends Component {
       return (
         <div
           className="message emote"
-          style={{color: 'hsl(' + hue(msg.sender.name) + ', 100%, 40%)'}}
+          style={nickFgColor(user.name)}
           >
           <span className="nick">
             {msg.sender.name}
@@ -43,7 +43,7 @@ class ChatThread extends Component {
       <div className="message">
         <div
           className="nick"
-          style={{color: 'hsl(' + hue(msg.sender.name) + ', 100%, 40%)'}}
+          style={nickFgColor(msg.sender.name)}
           >
           {msg.sender.name}
         </div>
