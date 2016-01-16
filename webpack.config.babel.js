@@ -58,8 +58,10 @@ if (process.env.NODE_ENV === 'production') {
   lessLoader.loader = ExtractTextPlugin.extract(lessLoader.loader)
   config.plugins.push(new ExtractTextPlugin('main.[contenthash].css'))
 
-  const uglifyPlugin = new webpack.optimize.UglifyJsPlugin()
-  config.plugins.push(uglifyPlugin)
+  config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: {warnings: false},
+  }))
+  config.plugins.push(new webpack.optimize.DedupePlugin())
 }
 
 export default config
