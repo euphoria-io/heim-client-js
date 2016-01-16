@@ -55,7 +55,7 @@ const config = {
 
 if (process.env.NODE_ENV === 'production') {
   const lessLoader = config.module.loaders[0]
-  lessLoader.loader = ExtractTextPlugin.extract(lessLoader,loader)
+  lessLoader.loader = ExtractTextPlugin.extract(lessLoader.loader)
   config.plugins.push(new ExtractTextPlugin('main.[contenthash].css'))
 }
 
