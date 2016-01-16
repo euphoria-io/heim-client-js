@@ -9,10 +9,15 @@ const initialState = {
 }
 
 export default function chat(state=initialState, action) {
-  if (action.type !== WS_MESSAGE_RECEIVED) {
-    return state
+  switch (action.type) {
+    case WS_MESSAGE_RECEIVED:
+      return messageReceived(state, action.packet)
+    default:
+      return state
   }
-  const packet = action.packet
+}
+
+function messageReceived(state, packet) {
   switch (packet.type) {
     case 'join-event':
       return addUser(state, packet.data)

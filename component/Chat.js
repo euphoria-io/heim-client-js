@@ -8,8 +8,7 @@ import ChatThread from './ChatThread'
 
 class Chat extends Component {
   render() {
-    const { tree } = this.props
-    return <ChatThread tree={tree} />
+    return <ChatThread {...this.props} />
   }
 }
 

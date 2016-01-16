@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
 import { hue } from '../lib/hueHash'
+import ScrollFollower from '../lib/ScrollFollower'
 import Tree from '../lib/Tree'
 
 class ChatThread extends Component {
@@ -11,11 +13,12 @@ class ChatThread extends Component {
     const children = tree.childrenOf(parentId)
     const msgNode = this.renderMessage(msg)
     const childrenNode = this.renderChildren(tree, children)
+
     return (
-      <div className="thread">
+      <ScrollFollower className="thread">
         {msgNode}
         {childrenNode}
-      </div>
+      </ScrollFollower>
     )
   }
 
@@ -54,13 +57,14 @@ class ChatThread extends Component {
       return ''
     }
     return (
-      <div className="children">
+      <div ref="children" className="children">
         {children.map(msgId =>
           <ChatThread key={msgId} tree={tree} parentId={msgId} />
         )}
       </div>
     )
   }
+
 }
 
 ChatThread.propTypes = {
@@ -68,4 +72,8 @@ ChatThread.propTypes = {
   parentId: PropTypes.string,
 }
 
-export default ChatThread
+function select(state) {
+  return state
+}
+
+export default connect(select)(ChatThread)
