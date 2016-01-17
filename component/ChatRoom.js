@@ -11,6 +11,9 @@ import UserList from './UserList'
 class ChatRoom extends Component {
   render() {
     const { chats, currentRoom } = this.props
+    if (!currentRoom) {
+      return null
+    }
     const chat = chats.get(currentRoom)
     return (
       <div className="chat-room">

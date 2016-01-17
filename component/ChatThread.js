@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
@@ -5,6 +6,8 @@ import { connect } from 'react-redux'
 import { nickFgColor } from '../lib/nick'
 import ScrollFollower from '../lib/ScrollFollower'
 import Tree from '../lib/Tree'
+
+import Timestamp from './Timestamp'
 
 class ChatThread extends Component {
   render() {
@@ -30,12 +33,13 @@ class ChatThread extends Component {
       return (
         <div
           className="message emote"
-          style={nickFgColor(user.name)}
+          style={nickFgColor(msg.sender.name)}
           >
           <span className="nick">
             {msg.sender.name}
           </span>
           {msg.content.substr(4)}
+          <Timestamp at={moment.unix(msg.time)} />
         </div>
       )
     }
@@ -47,7 +51,10 @@ class ChatThread extends Component {
           >
           {msg.sender.name}
         </div>
-        <div className="content">{msg.content}</div>
+        <div className="content">
+          {msg.content}
+          <Timestamp at={moment.unix(msg.time)} />
+        </div>
       </div>
     )
   }
@@ -72,13 +79,9 @@ ChatThread.propTypes = {
   parentId: PropTypes.string,
 }
 
-/*
 function select(state) {
   const { chatSwitch } = state
   return chatSwitch.chats.get(chatSwitch.currentRoom)
 }
 
 export default connect(select)(ChatThread)
-*/
-
-export default ChatThread

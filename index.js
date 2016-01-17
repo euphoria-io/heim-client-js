@@ -3,6 +3,7 @@ import { browserHistory, createMemoryHistory } from 'react-router'
 
 import App from './component/App'
 
+import Clock from './lib/Clock'
 import SocketSwitch from './lib/SocketSwitch'
 
 import renderStaticPage from './site/server'
@@ -16,6 +17,7 @@ const socketSwitch = new SocketSwitch(store, 'https://euphoria.io')
 const view = App.view(history, store, socketSwitch)
 
 if (inBrowser) {
+  new Clock(store)
   require('style!./css/main.less')
   require('./site/client').default(store, view)
 }

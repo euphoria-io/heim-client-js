@@ -7,3 +7,5 @@ export const WS_CONNECTED = Action('WS_CONNECTED')
 export const WS_DISCONNECTED = Action('WS_DISCONNECTED')
 export const WS_MESSAGE_RECEIVED = Action('WS_MESSAGE_RECEIVED')
 export const WS_MESSAGE_SENT = Action('WS_MESSAGE_SENT')
+
+export const TICK = Action('TICK')
