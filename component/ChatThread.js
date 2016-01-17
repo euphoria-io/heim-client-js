@@ -15,7 +15,7 @@ class ChatThread extends Component {
     const msg = parentId ? tree.nodes.get(parentId) : null
     const children = tree.childrenOf(parentId)
     const msgNode = this.renderMessage(msg)
-    const childrenNode = this.renderChildren(tree, children)
+    const childrenNode = this.renderChildren(children)
 
     return (
       <ScrollFollower className="thread">
@@ -59,14 +59,15 @@ class ChatThread extends Component {
     )
   }
 
-  renderChildren(tree, children) {
+  renderChildren(children) {
     if (!children) {
       return ''
     }
+    const { roomName, tree } = this.props
     return (
       <div ref="children" className="children">
         {children.map(msgId =>
-          <ChatThread key={msgId} tree={tree} parentId={msgId} />
+          <ChatThread key={msgId} roomName={roomName} tree={tree} parentId={msgId} />
         )}
       </div>
     )
@@ -75,13 +76,15 @@ class ChatThread extends Component {
 }
 
 ChatThread.propTypes = {
-  tree: PropTypes.instanceOf(Tree).isRequired,
   parentId: PropTypes.string,
+  roomName: PropTypes.string.isRequired,
+  tree: PropTypes.instanceOf(Tree).isRequired,
 }
 
-function select(state) {
+function select(state, props) {
   const { chatSwitch } = state
-  return chatSwitch.chats.get(chatSwitch.currentRoom)
+  const { roomName } = props
+  return chatSwitch.chats.get(roomName)
 }
 
 export default connect(select)(ChatThread)

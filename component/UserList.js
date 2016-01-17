@@ -62,12 +62,15 @@ class UserList extends Component {
 }
 
 UserList.propTypes = {
+  roomName: PropTypes.string.isRequired,
   users: PropTypes.instanceOf(Immutable.Map).isRequired,
 }
 
-function select(state) {
+function select(state, props) {
   const { chatSwitch } = state
-  return chatSwitch.chats.get(chatSwitch.currentRoom)
+  const { roomName } = props
+  const { users } = chatSwitch.chats.get(roomName)
+  return {roomName, users}
 }
 
 export default connect(select)(UserList)

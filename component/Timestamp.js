@@ -2,6 +2,12 @@ import moment from 'moment'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+function isMoment(prop, propName) {
+  if (!moment.isMoment(prop[propName])) {
+    return new Error('not a Moment instance')
+  }
+}
+
 class Timestamp extends Component {
   render() {
     const { at, now } = this.props
@@ -18,7 +24,7 @@ class Timestamp extends Component {
 }
 
 Timestamp.propTypes = {
-  at: PropTypes.instanceOf(moment.Moment).isRequired,
+  at: PropTypes.oneOfType([PropTypes.number, isMoment]).isRequired,
   now: PropTypes.instanceOf(Date).isRequired,
 }
 

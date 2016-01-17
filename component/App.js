@@ -11,9 +11,18 @@ class App extends Component {
   render() {
     return (
       <div>
-        {this.props.children && React.cloneElement(this.props.children, {ws: this.props.ws})}
+        {this.props.children && React.cloneElement(this.props.children)}
       </div>
     )
+  }
+
+  componentWillReceiveProps(props) {
+    this.props.socketSwitch.select(props.roomName)
+  }
+
+  componentDidMount() {
+    const { roomName } = this.props
+    this.props.socketSwitch.select(roomName)
   }
 }
 
@@ -23,7 +32,9 @@ App.propTypes = {
 
 App.view = function(history, store, socketSwitch) {
   let bindSocket = (Component, props) => {
-    return <Component socketSwitch={socketSwitch} {...props} />
+    const { params } = props
+    const { roomName } = params
+    return <Component roomName={roomName} socketSwitch={socketSwitch} {...props} />
   }
 
   return (

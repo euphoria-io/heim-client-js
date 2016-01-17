@@ -9,7 +9,7 @@ import ChatThread from './ChatThread'
 class Chat extends Component {
   render() {
     const { roomName, tree } = this.props
-    return <ChatThread key={roomName} tree={tree} />
+    return <ChatThread roomName={roomName} tree={tree} />
   }
 }
 
@@ -20,8 +20,7 @@ Chat.propTypes = {
 
 function select(state) {
   const { chatSwitch } = state
-  const chat = chatSwitch.chats.get(chatSwitch.currentRoom)
-  return chat
+  return chatSwitch.chats.get(chatSwitch.currentRoom)
 }
 
 export default connect(select)(Chat)

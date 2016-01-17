@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import SocketSwitch from '../lib/SocketSwitch'
+import Tree from '../lib/Tree'
 
 import Chat from './Chat'
 import Connection from './Connection'
@@ -10,40 +11,32 @@ import UserList from './UserList'
 
 class ChatRoom extends Component {
   render() {
-    const { chats, currentRoom } = this.props
-    if (!currentRoom) {
+    const { roomName, socketState } = this.props
+    if (!roomName) {
       return null
     }
-    const chat = chats.get(currentRoom)
     return (
       <div className="chat-room">
-        <Connection />
+        <Connection socketState={socketState} />
         <div className="chat-room-content">
-          <Chat />
-          <UserList />
+          <Chat roomName={roomName} />
+          <UserList roomName={roomName} />
         </div>
       </div>
     )
   }
-
-  componentDidMount() {
-    console.log('update chat room')
-    this.props.socketSwitch.select(this.props.currentRoom)
-  }
-
-  componentDidUpdate() {
-    console.log('update chat room')
-    this.props.socketSwitch.select(this.props.currentRoom)
-  }
 }
 
 ChatRoom.propTypes = {
-  currentRoom: PropTypes.string,
+  roomName: PropTypes.string,
   socketSwitch: PropTypes.instanceOf(SocketSwitch).isRequired,
+  tree: PropTypes.instanceOf(Tree).isRequired,
 }
 
-function select(state) {
-  return state.chatSwitch
+function select(state, props) {
+  const { chatSwitch } = state
+  const { roomName } = props
+  return state.chatSwitch.chats.get(roomName)
 }
 
 export default connect(select)(ChatRoom)

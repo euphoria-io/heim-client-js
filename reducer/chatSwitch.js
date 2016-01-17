@@ -7,7 +7,7 @@ import Tree from '../lib/Tree'
 import chat from './chat'
 
 const initialState = {
-  chats: new Immutable.Map(),
+  chats: Immutable.Map(),
   currentRoom: null,
 }
 
@@ -25,12 +25,15 @@ export default function chatSwitch(state=initialState, action) {
       if (!match) {
         return state
       } else {
-        const chatState = state.chats.get(match[1], initialChatState)
-        const chats = state.chats.set(match[1], chat(chatState, action))
-        return {chats, currentRoom: match[1]}
+        const currentRoom = match[1]
+        let chats = state.chats
+        if (!state.chats.has(currentRoom)) {
+          chats = chats.set(currentRoom, {...initialChatState, roomName: currentRoom})
+        }
+        return {chats, currentRoom}
       }
     default:
-      const chatState = state.chats.get(action.roomName, {...initialChatState, roomName: state.currentRoom})
+      const chatState = state.chats.get(action.roomName, {...initialChatState, roomName: action.roomName})
       const chats = state.chats.set(action.roomName, chat(chatState, action))
       return {...state, chats}
   }
