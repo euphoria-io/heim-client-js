@@ -37,6 +37,7 @@
     "emoji-annotation-to-unicode": "^0.2.2",
     "immutable": "^3.7.6",
     "lodash": "^4.0.0",
+    "moment": "^2.11.1",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-redux": "^4.0.6",
