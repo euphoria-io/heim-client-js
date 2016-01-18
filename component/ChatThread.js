@@ -7,6 +7,7 @@ import { nickBgColor, nickBgLightColor } from '../lib/nick'
 import Tree from '../lib/Tree'
 
 import Timestamp from './Timestamp'
+import UserText from './UserText'
 
 class ChatThread extends Component {
   render() {
@@ -53,10 +54,10 @@ class ChatThread extends Component {
     return (
       <div className={className} style={messageStyle}>
         <div className="sender">
-          <div className="nick" style={nickStyle}>{msg.sender.name}</div>
+          <UserText className="nick" style={nickStyle}>{msg.sender.name}</UserText>
         </div>
         <div className="content-and-time">
-          <div className="content" style={contentStyle}>{content}</div>
+          <UserText className="content" style={contentStyle}>{content}</UserText>
           <Timestamp at={moment.unix(msg.time)} />
         </div>
       </div>

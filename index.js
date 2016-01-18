@@ -19,6 +19,7 @@ const view = App.view(history, store, socketSwitch)
 if (inBrowser) {
   new Clock(store)
   require('style!./css/main.less')
+  require('style!./css/emoji.emoji-less')
   require('./site/client').default(store, view)
 }
 

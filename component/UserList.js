@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import { nickBgColor } from '../lib/nick'
 import Tree from '../lib/Tree'
 
+import UserText from './UserText'
+
 class UserList extends Component {
   render() {
     const { users } = this.props
@@ -51,9 +53,9 @@ class UserList extends Component {
   renderUser(user) {
     return (
       <div key={user.session_id} className="user">
-        <span className="nick" style={nickBgColor(user.name)}>
+        <UserText className="nick" style={nickBgColor(user.name)}>
           {user.name}
-        </span>
+        </UserText>
       </div>
     )
   }

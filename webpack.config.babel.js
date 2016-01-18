@@ -16,10 +16,6 @@ const config = {
     libraryTarget: 'umd',
   },
 
-  externals: [
-    'react-dom/server',
-  ],
-
   devServer: {
     historyApiFallback: true,
   },
@@ -32,6 +28,11 @@ const config = {
         test: /\.less$/,
         include: path.resolve(__dirname, 'css'),
         loader: 'css!autoprefixer!less',
+      },
+      {
+        test: /\.emoji-less$/,
+        include: path.resolve(__dirname, 'css'),
+        loader: 'css!autoprefixer!less!./loader/emojiLess',
       },
       {
         test: /\.js$/,

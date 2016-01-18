@@ -30,8 +30,22 @@ body {
   }
 }
 
-.nick {
+.emoji {
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  overflow: hidden;
+  text-indent: 100%;
   white-space: nowrap;
+
+  // dimensions expressed in em, not rem, to match local font size
+  height: 1em;
+  width: 1em;
+}
+
+.nick {
+  display: inline-block;
   border-radius: 0.3rem;
   padding: @nick-vertical-padding @nick-horizontal-padding @nick-vertical-padding @nick-horizontal-padding;
+  white-space: nowrap;
 }

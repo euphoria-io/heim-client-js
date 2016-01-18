@@ -91,7 +91,7 @@
 
 .users {
   display: flex;
-  flex-direction: column;
+  flex-flow: column nowrap;
   background: #eee;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -110,6 +110,11 @@
 
   .user-list {
     flex-shrink: 1;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+
     margin-bottom: 5pt;
   }
 

@@ -4,14 +4,16 @@ import twemoji from 'twemoji'
 
 import emoji from '../lib/emoji'
 
-class UserText extends Component {
+export default class UserText extends Component {
   render() {
-    let html = _.escape(this.props.content)
+    let html = _.escape(this.props.children)
+
     html = html.replace(emoji.namesRe, (match, name) =>
       ReactDOMServer.renderToStaticMarkup(
         <div className={'emoji emoji-' + emoji.index[name]} title={match}>{match}</div>
       )
     )
+
     html = twemoji.replace(html, (match, icon, variant) => {
       if (variant === '\uFE0E') {
         return match
@@ -26,14 +28,14 @@ class UserText extends Component {
       )
     })
 
+    let props = this.props
+    props = {
+      ...props,
+      className: props.className || 'user-text',
+    }
+    delete(props.children)
     return (
-      <span className="user-text" dangerouslySetInnerHTML={{__html: html}} />
+      <div {...props} dangerouslySetInnerHTML={{__html: html}} />
     )
   }
 }
-
-UserText.propTypes = {
-  content: PropTypes.string.isRequired,
-}
-
-export default UserText
