@@ -13,8 +13,8 @@ class ChatThread extends Component {
     const { tree, parentId } = this.props
     const msg = parentId ? tree.nodes.get(parentId) : null
     const children = tree.childrenOf(parentId)
-    const msgNode = this.renderMessage(msg)
-    const childrenNode = !!children.size ? this.renderChildren(children) : null
+    const childrenNode = !!children.size ? this.renderChildren(children, msg && msg.sender.name) : null
+    const msgNode = this.renderMessage(msg, !!children.size)
 
     return (
       <div className="thread">
@@ -24,17 +24,37 @@ class ChatThread extends Component {
     )
   }
 
-  renderMessage(msg) {
+  renderMessage(msg, withChildren) {
     if (!msg) {
       return ''
     }
+
+    let messageStyle = {}
+    let nickStyle = nickBgColor(msg.sender.name)
+    if (withChildren) {
+      nickStyle = {
+        ...nickStyle,
+        borderBottomLeftRadius: 0,
+      }
+      messageStyle = {
+        ...messageStyle,
+        borderTopLeftRadius: '0.3rem',
+        borderLeftStyle: 'solid',
+        borderLeftWidth: '2px',
+        borderLeftColor: nickStyle.background,
+      }
+    }
+
+
     const emote = msg.content.startsWith('/me ')
     const className = emote ? 'message emote' : 'message'
     const content = emote ? msg.content.substr(4) : msg.content
     const contentStyle = emote ? nickBgLightColor(msg.sender.name) : null
     return (
-      <div className={className}>
-        <div className="nick" style={nickBgColor(msg.sender.name)}>{msg.sender.name}</div>
+      <div className={className} style={messageStyle}>
+        <div className="sender">
+          <div className="nick" style={nickStyle}>{msg.sender.name}</div>
+        </div>
         <div className="content-and-time">
           <div className="content" style={contentStyle}>{content}</div>
           <Timestamp at={moment.unix(msg.time)} />
@@ -43,13 +63,22 @@ class ChatThread extends Component {
     )
   }
 
-  renderChildren(children) {
+  renderChildren(children, parentNick) {
     if (!children) {
       return ''
     }
     const { roomName, tree } = this.props
+    let style = {}
+    if (parentNick) {
+      style = {
+        ...style,
+        borderLeftStyle: 'solid',
+        borderLeftWidth: '2px',
+        borderLeftColor: nickBgColor(parentNick).background,
+      }
+    }
     return (
-      <div ref="children" className="children">
+      <div ref="children" className="children" style={style}>
         {children.map(msgId =>
           <ChatThread key={msgId} roomName={roomName} tree={tree} parentId={msgId} />
         )}

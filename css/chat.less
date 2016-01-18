@@ -11,11 +11,9 @@
   align-items: flex-start;
   overflow: hidden;
 
-  margin-bottom: 0.4rem;
-
   .nick {
     line-height: 1.2rem;
-    margin-right: 0.2rem;
+    margin-right: @nick-horizontal-padding;
   }
 
   .content-and-time {
@@ -56,7 +54,9 @@
 }
 
 .children {
-  margin-left: 2rem;
+  padding-left: 2rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
 
   &.top {
     flex: 1;
@@ -68,9 +68,24 @@
   }
 }
 
+.thread {
+  margin-bottom: 0.4rem;
+}
+
+// Ends of threads are complicated places. This is the only place we want to show timestamps,
+// and there are some positioning hacks needed for smooth border styling.
 .top .thread .thread:last-child {
-  time {
-    display: inline;
+  margin-bottom: 0;
+
+  > .message {
+    margin-bottom: -0.4rem;
+    time {
+      display: inline;
+    }
+  }
+
+  > .children {
+    margin-top: 0.4rem;
   }
 }
 
