@@ -3,8 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
-import { nickFgColor } from '../lib/nick'
-import ScrollFollower from '../lib/ScrollFollower'
+import { nickBgColor, nickBgLightColor } from '../lib/nick'
 import Tree from '../lib/Tree'
 
 import Timestamp from './Timestamp'
@@ -15,13 +14,13 @@ class ChatThread extends Component {
     const msg = parentId ? tree.nodes.get(parentId) : null
     const children = tree.childrenOf(parentId)
     const msgNode = this.renderMessage(msg)
-    const childrenNode = this.renderChildren(children)
+    const childrenNode = !!children.size ? this.renderChildren(children) : null
 
     return (
-      <ScrollFollower className="thread">
+      <div className="thread">
         {msgNode}
         {childrenNode}
-      </ScrollFollower>
+      </div>
     )
   }
 
@@ -29,30 +28,15 @@ class ChatThread extends Component {
     if (!msg) {
       return ''
     }
-    if (msg.content.startsWith('/me ')) {
-      return (
-        <div
-          className="message emote"
-          style={nickFgColor(msg.sender.name)}
-          >
-          <span className="nick">
-            {msg.sender.name}
-          </span>
-          {msg.content.substr(4)}
-          <Timestamp at={moment.unix(msg.time)} />
-        </div>
-      )
-    }
+    const emote = msg.content.startsWith('/me ')
+    const className = emote ? 'message emote' : 'message'
+    const content = emote ? msg.content.substr(4) : msg.content
+    const contentStyle = emote ? nickBgLightColor(msg.sender.name) : null
     return (
-      <div className="message">
-        <div
-          className="nick"
-          style={nickFgColor(msg.sender.name)}
-          >
-          {msg.sender.name}
-        </div>
-        <div className="content">
-          {msg.content}
+      <div className={className}>
+        <div className="nick" style={nickBgColor(msg.sender.name)}>{msg.sender.name}</div>
+        <div className="content-and-time">
+          <div className="content" style={contentStyle}>{content}</div>
           <Timestamp at={moment.unix(msg.time)} />
         </div>
       </div>

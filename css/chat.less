@@ -3,57 +3,110 @@
   flex: 1;
   flex-direction: row;
   overflow: hidden;
-  margin-bottom: 10px;
-
-  > .thread {
-    flex: 1;
-    overflow-y: scroll;
-  }
 }
 
 .message {
-  margin-bottom: 0.75em;
-  overflow-wrap: break-word;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  overflow: hidden;
+
+  margin-bottom: 0.4rem;
+
+  .nick {
+    line-height: 1.2rem;
+    margin-right: 0.2rem;
+  }
+
+  .content-and-time {
+    flex: 1;
+    line-height: 1.2rem;
+    overflow-wrap: break-word;
+  }
+
+  .content {
+    display: inline-block;
+    padding-top: @nick-vertical-padding;
+  }
 
   time {
+    display: none;
     color: #999;
     font-size: small;
-    margin-left: 0.5em;
+    margin-left: 0.5rem;
+  }
+
+  &.emote {
+    .nick {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      margin-right: 0;
+    }
+
+    .content-and-time {
+      .content {
+        @scale: 0.9;
+        font-size: @scale*1rem;
+        padding: @nick-vertical-padding @nick-horizontal-padding 0 @nick-horizontal-padding;
+        line-height: 1.2rem/@scale;
+        margin-bottom: -0.1rem;
+      }
+    }
   }
 }
 
-.nick {
-  font-weight: bold;
-}
-
-.emote .nick::after {
-  content: ' ';
-}
-
 .children {
-  margin-left: 2em;
+  margin-left: 2rem;
+
+  &.top {
+    flex: 1;
+    overflow-y: scroll;
+    margin-left: 0;
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+}
+
+.top .thread .thread:last-child {
+  time {
+    display: inline;
+  }
 }
 
 .users {
   display: flex;
   flex-direction: column;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  background: #eee;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   overflow-x: hidden;
-  overflow-y: scroll;
-  width: 220px;
+  overflow-y: auto;
+  width: 160px;
 
   h1 {
-    font-size: inherit;
+    color: #999;
+    font-variant: small-caps;
+    font-weight: medium;
+    font-size: larger;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   .user-list {
     flex-shrink: 1;
+    margin-bottom: 5pt;
+  }
+
+  .user {
+    padding-bottom: @nick-vertical-padding+0.1rem;
+    padding-top: @nick-vertical-padding+0.1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .nick {
-    height: 1.3em;
-    overflow: hidden;
     text-overflow: ellipsis;
+    width: 100%;
   }
 }

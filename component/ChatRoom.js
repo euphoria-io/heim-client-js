@@ -2,7 +2,6 @@ import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import SocketSwitch from '../lib/SocketSwitch'
 import Tree from '../lib/Tree'
 
 import Chat from './Chat'
@@ -29,7 +28,6 @@ class ChatRoom extends Component {
 
 ChatRoom.propTypes = {
   roomName: PropTypes.string,
-  socketSwitch: PropTypes.instanceOf(SocketSwitch).isRequired,
   tree: PropTypes.instanceOf(Tree).isRequired,
 }
 

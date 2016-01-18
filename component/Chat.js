@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import ScrollFollower from '../lib/ScrollFollower'
 import Socket from '../lib/Socket'
 import Tree from '../lib/Tree'
 
@@ -9,7 +10,11 @@ import ChatThread from './ChatThread'
 class Chat extends Component {
   render() {
     const { roomName, tree } = this.props
-    return <ChatThread roomName={roomName} tree={tree} />
+    return (
+      <ScrollFollower className="children top">
+        <ChatThread roomName={roomName} tree={tree} />
+      </ScrollFollower>
+    )
   }
 }
 
