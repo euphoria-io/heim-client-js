@@ -1,4 +1,3 @@
-import React from 'react'
 import { browserHistory, createMemoryHistory } from 'react-router'
 
 import App from './component/App'
@@ -17,7 +16,7 @@ const socketSwitch = new SocketSwitch(store, 'https://euphoria.io')
 const view = App.view(history, store, socketSwitch)
 
 if (inBrowser) {
-  new Clock(store)
+  new Clock(store) // eslint-disable-line no-new
   require('style!./css/main.less')
   require('./site/client').default(store, view)
 }

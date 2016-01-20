@@ -1,6 +1,4 @@
-import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 
 class Connection extends Component {
   render() {

@@ -1,4 +1,3 @@
-import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
@@ -29,12 +28,12 @@ class ChatRoom extends Component {
 
 ChatRoom.propTypes = {
   roomName: PropTypes.string,
+  socketState: PropTypes.string.isRequired,
   socketSwitch: PropTypes.instanceOf(SocketSwitch).isRequired,
   tree: PropTypes.instanceOf(Tree).isRequired,
 }
 
 function select(state, props) {
-  const { chatSwitch } = state
   const { roomName } = props
   return state.chatSwitch.chats.get(roomName)
 }

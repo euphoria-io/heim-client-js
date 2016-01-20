@@ -45,6 +45,8 @@ class Message extends Component {
 }
 
 Message.propTypes = {
+  hasChildren: PropTypes.bool,
+  msg: PropTypes.object,
   msgId: PropTypes.string.isRequired,
   roomName: PropTypes.string.isRequired,
 }

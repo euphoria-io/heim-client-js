@@ -3,14 +3,32 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import { nickBgColor } from '../lib/nick'
-import Tree from '../lib/Tree'
 
 import UserText from './UserText'
 
 class UserList extends Component {
+  renderUserList(kind, users) {
+    return !!users.size && (
+      <div className={'user-list ' + kind}>
+        <h1>{kind}</h1>
+        {users.map(user => this.renderUser(user))}
+      </div>
+    )
+  }
+
+  renderUser(user) {
+    return (
+      <div key={user.session_id} className="user">
+        <UserText className="nick" style={nickBgColor(user.name)}>
+          {user.name}
+        </UserText>
+      </div>
+    )
+  }
+
   render() {
     const { users } = this.props
-    const groups = users.groupBy((v, k, i) => /^bot:/.test(v.id) ? 'bots' : 'people')
+    const groups = users.groupBy(v => /^bot:/.test(v.id) ? 'bots' : 'people')
 
     function uniqSeq(list) {
       if (!list) {
@@ -19,7 +37,7 @@ class UserList extends Component {
       let prev
       return list
         .sortBy(user => user.name.toLowerCase())
-        .filter((v, k, i) => {
+        .filter(v => {
           if (!v.name) {
             return false
           }
@@ -40,25 +58,6 @@ class UserList extends Component {
       </div>
     )
   }
-
-  renderUserList(kind, users) {
-    return !!users.size && (
-      <div className={"user-list " + kind}>
-        <h1>{kind}</h1>
-        {users.map(user => this.renderUser(user))}
-      </div>
-    )
-  }
-
-  renderUser(user) {
-    return (
-      <div key={user.session_id} className="user">
-        <UserText className="nick" style={nickBgColor(user.name)}>
-          {user.name}
-        </UserText>
-      </div>
-    )
-  }
 }
 
 UserList.propTypes = {
@@ -70,7 +69,7 @@ function select(state, props) {
   const { chatSwitch } = state
   const { roomName } = props
   const { users } = chatSwitch.chats.get(roomName)
-  return {roomName, users}
+  return { roomName, users }
 }
 
 export default connect(select)(UserList)

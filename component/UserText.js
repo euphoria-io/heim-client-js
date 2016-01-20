@@ -1,10 +1,11 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import twemoji from 'twemoji'
 
 import emoji from '../lib/emoji'
 
-export default class UserText extends Component {
+class UserText extends Component {
   render() {
     let html = _.escape(this.props.children)
 
@@ -35,7 +36,16 @@ export default class UserText extends Component {
     }
     delete(props.children)
     return (
-      <div {...props} dangerouslySetInnerHTML={{__html: html}} />
+      <div {...props} dangerouslySetInnerHTML={{ __html: html }} />
     )
   }
 }
+
+UserText.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
+}
+
+export default UserText

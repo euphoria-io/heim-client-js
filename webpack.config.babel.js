@@ -23,6 +23,17 @@ const config = {
   devtool: 'source-map',
 
   module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loaders: ['eslint'],
+      },
+      {
+        test: /emoji.less$/,
+        loader: '../loader/emojiLess',
+      },
+    ],
     loaders: [
       {
         test: /\.less$/,
@@ -37,12 +48,6 @@ const config = {
       {
         test: /\.svg$/,
         loader: 'url?limit=1000000',
-      },
-    ],
-    preLoaders: [
-      {
-        test: /emoji.less$/,
-        loader: '../loader/emojiLess',
       },
     ],
   },

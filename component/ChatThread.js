@@ -1,26 +1,11 @@
 import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
 import { nickBgColor } from '../lib/nick'
-import Tree from '../lib/Tree'
 
 import Message from './Message'
 
 class _ChatThread extends Component {
-  render() {
-    const { children, msg, parentId, roomName } = this.props
-    const msgNode = msg ? <Message msgId={msg.id} roomName={roomName} /> : null
-    const childrenNode = !!children ? this.renderChildren(children, msg && msg.sender.name) : null
-
-    return (
-      <div className="thread">
-        {msgNode}
-        {childrenNode}
-      </div>
-    )
-  }
-
   renderChildren(children, parentNick) {
     if (!children || !children.size) {
       return ''
@@ -43,9 +28,27 @@ class _ChatThread extends Component {
       </div>
     )
   }
+
+  render() {
+    const { children, msg, roomName } = this.props
+    const msgNode = msg ? <Message msgId={msg.id} roomName={roomName} /> : null
+    const childrenNode = !!children ? this.renderChildren(children, msg && msg.sender.name) : null
+
+    return (
+      <div className="thread">
+        {msgNode}
+        {childrenNode}
+      </div>
+    )
+  }
 }
 
 _ChatThread.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
+  msg: PropTypes.object,
   parentId: PropTypes.string,
   roomName: PropTypes.string.isRequired,
 }
@@ -57,9 +60,9 @@ function select(state, props) {
   const children = chat.tree.childrenOf(parentId)
   return {
     children,
-    msg
+    msg,
   }
 }
 
-var ChatThread = connect(select)(_ChatThread)
+const ChatThread = connect(select)(_ChatThread)
 export default ChatThread

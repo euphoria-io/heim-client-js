@@ -1,4 +1,4 @@
-const Action = a => '@@heim-client/'+a
+const Action = a => '@@heim-client/' + a
 
 export const SWITCH_ROOM = Action('SWITCH_ROOM')
 

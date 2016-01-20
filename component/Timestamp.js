@@ -11,7 +11,6 @@ function isMoment(prop, propName) {
 class Timestamp extends Component {
   render() {
     const { at, now } = this.props
-    let display
     if (moment(now).diff(at, 'minutes') === 0) {
       return null
     }
