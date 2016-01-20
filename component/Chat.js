@@ -1,17 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import Backlog from '../lib/Backlog'
 import ScrollFollower from '../lib/ScrollFollower'
-import Socket from '../lib/Socket'
+import SocketSwitch from '../lib/SocketSwitch'
 import Tree from '../lib/Tree'
 
 import ChatThread from './ChatThread'
 
 class Chat extends Component {
   render() {
-    const { roomName, tree } = this.props
+    const { roomName, socketSwitch, tree } = this.props
+    const backlog = new Backlog(socketSwitch, roomName)
     return (
-      <ScrollFollower className="children top">
+      <ScrollFollower className="children top" backlog={backlog}>
         <ChatThread roomName={roomName} tree={tree} />
       </ScrollFollower>
     )
@@ -20,6 +22,7 @@ class Chat extends Component {
 
 Chat.propTypes = {
   roomName: PropTypes.string.isRequired,
+  socketSwitch: PropTypes.instanceOf(SocketSwitch).isRequired,
   tree: PropTypes.instanceOf(Tree).isRequired,
 }
 
