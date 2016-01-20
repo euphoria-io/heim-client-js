@@ -12,7 +12,7 @@ import UserText from './UserText'
 class ChatThread extends Component {
   render() {
     const { tree, parentId } = this.props
-    const msg = parentId ? tree.nodes.get(parentId) : null
+    const msg = parentId ? tree.get(parentId) : null
     const children = tree.childrenOf(parentId)
     const childrenNode = !!children.size ? this.renderChildren(children, msg && msg.sender.name) : null
     const msgNode = this.renderMessage(msg, !!children.size)
@@ -80,8 +80,8 @@ class ChatThread extends Component {
     }
     return (
       <div ref="children" className="children" style={style}>
-        {children.map(msgId =>
-          <ChatThread key={msgId} roomName={roomName} tree={tree} parentId={msgId} />
+        {children.valueSeq().map(msg =>
+          <ChatThread key={msg.id} roomName={roomName} tree={tree} parentId={msg.id} />
         )}
       </div>
     )

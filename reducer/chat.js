@@ -34,6 +34,7 @@ export default function chatSwitch(state=initialState, action) {
 
 const initialChatState = {
   fetching: true,
+  oldestDisplayedMsgId: null,
   oldestMsgId: null,
 
   roomName: null,
@@ -73,7 +74,8 @@ function messageReceived(state, packet) {
     case 'join-event':
       return addUser(state, packet.data)
     case 'log-reply':
-      if (!packet.data.log) {
+      if (!packet.data.log.length) {
+        console.log('reached end of backlog')
         return {...state, fetching: false, complete: true}
       }
       for (var i = 0; i < packet.data.log.length; i++) {
@@ -99,13 +101,17 @@ function messageReceived(state, packet) {
   }
 }
 
-function addMessage(state, msg, greedy=false) {
+function addMessage(state, msg, forceDisplay=false) {
   let oldestMsgId = state.oldestMsgId
   if (!oldestMsgId || msg.id < oldestMsgId) {
     oldestMsgId = msg.id
   }
-  const tree = state.tree.addChild(msg.parent, msg.id, msg, greedy)
-  return {...state, oldestMsgId, tree}
+  let oldestDisplayedMsgId = state.oldestDisplayedMsgId
+  if (forceDisplay && (!oldestDisplayedMsgId || msg.id < oldestDisplayedMsgId)) {
+    oldestDisplayedMsgId = msg.id
+  }
+  const tree = state.tree.addChild(msg)
+  return {...state, oldestDisplayedMsgId, oldestMsgId, tree}
 }
 
 function addUser(state, sessionView) {
