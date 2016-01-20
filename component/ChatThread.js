@@ -7,13 +7,11 @@ import Tree from '../lib/Tree'
 
 import Message from './Message'
 
-class ChatThread extends Component {
+class _ChatThread extends Component {
   render() {
-    const { parentId, roomName, tree } = this.props
-    const msg = parentId ? tree.get(parentId) : null
+    const { children, msg, parentId, roomName } = this.props
     const msgNode = msg ? <Message msgId={msg.id} roomName={roomName} /> : null
-    const children = tree.childrenOf(parentId)
-    const childrenNode = !!children.size ? this.renderChildren(children, msg && msg.sender.name) : null
+    const childrenNode = !!children ? this.renderChildren(children, msg && msg.sender.name) : null
 
     return (
       <div className="thread">
@@ -24,10 +22,10 @@ class ChatThread extends Component {
   }
 
   renderChildren(children, parentNick) {
-    if (!children) {
+    if (!children || !children.size) {
       return ''
     }
-    const { roomName, tree } = this.props
+    const { roomName } = this.props
     let style = {}
     if (parentNick) {
       style = {
@@ -40,24 +38,28 @@ class ChatThread extends Component {
     return (
       <div ref="children" className="children" style={style}>
         {children.valueSeq().map(msg =>
-          <ChatThread key={msg.id} roomName={roomName} tree={tree} parentId={msg.id} />
+          <ChatThread key={msg.id} roomName={roomName} parentId={msg.id} />
         )}
       </div>
     )
   }
-
 }
 
-ChatThread.propTypes = {
+_ChatThread.propTypes = {
   parentId: PropTypes.string,
   roomName: PropTypes.string.isRequired,
-  tree: PropTypes.instanceOf(Tree).isRequired,
 }
 
 function select(state, props) {
-  const { chatSwitch } = state
-  const { roomName } = props
-  return chatSwitch.chats.get(roomName)
+  const { parentId, roomName } = props
+  const chat = state.chatSwitch.chats.get(roomName)
+  const msg = parentId ? chat.tree.get(parentId) : null
+  const children = chat.tree.childrenOf(parentId)
+  return {
+    children,
+    msg
+  }
 }
 
-export default connect(select)(ChatThread)
+var ChatThread = connect(select)(_ChatThread)
+export default ChatThread

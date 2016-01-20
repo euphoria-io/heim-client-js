@@ -12,7 +12,7 @@ class Message extends Component {
     const { hasChildren, msg } = this.props
     let messageStyle = {}
     let nickStyle = nickBgColor(msg.sender.name)
-    if (hasChildren) {
+    if (!!hasChildren) {
       nickStyle = {
         ...nickStyle,
         borderBottomLeftRadius: 0,
