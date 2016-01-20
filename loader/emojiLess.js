@@ -14,11 +14,13 @@ module.exports = function(source) {
     }
     const twemojiPath = path.dirname(require.resolve('twemoji')) + '/svg/'
     const twemojiName = code.replace(/^0*/, '')
-    let emojiPath = '../res/emoji/' + twemojiName + '.svg'
-    if (!fs.existsSync(emojiPath)) {
+    let emojiPath = path.join(__dirname, '../res/emoji', twemojiName+'.svg')
+    if (fs.existsSync(emojiPath)) {
+      emojiPath = '../res/emoji/' + twemojiName + '.svg'
+    } else {
       emojiPath = twemojiPath + twemojiName + '.svg'
     }
     return `.emoji-${code} { background-image: data-uri("${emojiPath}") }`
   }).join('\n')
-  cb(null, output)
+  cb(null, source+output)
 }

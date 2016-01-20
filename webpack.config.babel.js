@@ -30,18 +30,19 @@ const config = {
         loader: 'css!autoprefixer!less',
       },
       {
-        test: /\.emoji-less$/,
-        include: path.resolve(__dirname, 'css'),
-        loader: 'css!autoprefixer!less!./loader/emojiLess',
-      },
-      {
         test: /\.js$/,
         exclude: /node_modules/,
         loaders: ['react-hot', 'babel'],
       },
       {
         test: /\.svg$/,
-        loader: 'url',
+        loader: 'url?limit=1000000',
+      },
+    ],
+    preLoaders: [
+      {
+        test: /emoji.less$/,
+        loader: '../loader/emojiLess',
       },
     ],
   },
