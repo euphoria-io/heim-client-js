@@ -4,7 +4,6 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import { nickBgColor, nickBgLightColor } from '../lib/nick'
 
-import Timestamp from './Timestamp'
 import UserText from './UserText'
 
 class Message extends Component {
@@ -33,11 +32,16 @@ class Message extends Component {
     return (
       <div className={className} style={messageStyle}>
         <div className="sender">
-          <UserText className="nick" style={nickStyle}>{msg.sender.name}</UserText>
+          <UserText className="nick" style={nickStyle} content={msg.sender.name} />
         </div>
         <div className="content-and-time">
-          <UserText className="content" style={contentStyle}>{content}</UserText>
-          <Timestamp at={moment.unix(msg.time)} now={now} />
+          <UserText
+            className="content"
+            style={contentStyle}
+            content={content}
+            timestamp={moment.unix(msg.time)}
+            now={now}
+          />
         </div>
       </div>
     )

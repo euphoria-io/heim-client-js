@@ -1,13 +1,22 @@
 import _ from 'lodash'
+import moment from 'moment'
 import React, { Component, PropTypes } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import twemoji from 'twemoji'
 
 import emoji from '../lib/emoji'
 
+import Timestamp from './Timestamp'
+
+function isMoment(prop, propName) {
+  if (!moment.isMoment(prop[propName])) {
+    return new Error('not a Moment instance')
+  }
+}
+
 class UserText extends Component {
   render() {
-    let html = _.escape(this.props.children)
+    let html = _.escape(this.props.content)
 
     html = html.replace(emoji.namesRe, (match, name) =>
       ReactDOMServer.renderToStaticMarkup(
@@ -29,6 +38,13 @@ class UserText extends Component {
       )
     })
 
+    const { now, timestamp } = this.props
+    if (timestamp) {
+      html += ReactDOMServer.renderToStaticMarkup(
+        <Timestamp at={timestamp} now={now} />
+      )
+    }
+
     let props = this.props
     props = {
       ...props,
@@ -42,11 +58,9 @@ class UserText extends Component {
 }
 
 UserText.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-    PropTypes.string,
-  ]).isRequired,
+  content: PropTypes.string.isRequired,
+  timestamp: PropTypes.oneOfType([PropTypes.number, isMoment]).isRequired,
+  now: PropTypes.instanceOf(Date),
 }
 
 export default UserText

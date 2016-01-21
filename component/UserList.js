@@ -19,9 +19,7 @@ class UserList extends Component {
   renderUser(user) {
     return (
       <div key={user.session_id} className="user">
-        <UserText className="nick" style={nickBgColor(user.name)}>
-          {user.name}
-        </UserText>
+        <UserText className="nick" style={nickBgColor(user.name)} content={user.name} />
       </div>
     )
   }
