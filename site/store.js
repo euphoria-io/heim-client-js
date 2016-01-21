@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { applyMiddleware, createStore } from 'redux'
 import { syncHistory, routeReducer } from 'redux-simple-router'
 import thunk from 'redux-thunk'
@@ -5,10 +6,14 @@ import thunk from 'redux-thunk'
 import rootReducer from '../reducer'
 
 export default function newStore(history, initialState) {
-  const reducer = rootReducer({ routing: routeReducer })
-  let csm = applyMiddleware(thunk)(createStore)
   const rrm = syncHistory(history)
-  csm = applyMiddleware(rrm)(csm)
+  const middleware = [
+    thunk,
+    rrm,
+  ]
+
+  const csm = _.reduce(middleware, (f, mw) => applyMiddleware(mw)(f), createStore)
+  const reducer = rootReducer({ routing: routeReducer })
   const store = csm(reducer, initialState)
 
   rrm.listenForReplays(store)
