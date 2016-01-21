@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
@@ -30,9 +31,9 @@ class _ChatThread extends Component {
   }
 
   render() {
-    const { children, msg, roomName } = this.props
+    const { childMessages, msg, roomName } = this.props
     const msgNode = msg ? <Message msgId={msg.id} roomName={roomName} /> : null
-    const childrenNode = !!children ? this.renderChildren(children, msg && msg.sender.name) : null
+    const childrenNode = !!childMessages ? this.renderChildren(childMessages, msg && msg.sender.name) : null
 
     return (
       <div className="thread">
@@ -44,10 +45,7 @@ class _ChatThread extends Component {
 }
 
 _ChatThread.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]).isRequired,
+  childMessages: PropTypes.instanceOf(Immutable.OrderedMap),
   msg: PropTypes.object,
   parentId: PropTypes.string,
   roomName: PropTypes.string.isRequired,
@@ -57,9 +55,9 @@ function select(state, props) {
   const { parentId, roomName } = props
   const chat = state.chatSwitch.chats.get(roomName)
   const msg = parentId ? chat.tree.get(parentId) : null
-  const children = chat.tree.childrenOf(parentId)
+  const childMessages = chat.tree.childrenOf(parentId)
   return {
-    children,
+    childMessages,
     msg,
   }
 }
