@@ -1,17 +1,36 @@
-import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 
 import { nickBgColor } from '../lib/nick'
+import Tree from '../lib/Tree'
 
 import Message from './Message'
 
-class _ChatThread extends Component {
+class ChatThread extends Component {
+  shouldComponentUpdate(nextProps) {
+    const { msg, now, tree } = this.props
+    if (msg !== nextProps.msg || now !== nextProps.now) {
+      return true
+    }
+
+    // Look for changes under descendants of this thread's root message.
+    const prefix = msg ? tree.paths.get(msg.id) : ''
+    const filter = path => path.startsWith(prefix)
+    let changeLog = nextProps.tree.changeLog
+    while (changeLog && changeLog !== tree.changeLog) {
+      const changes = changeLog.paths.filter(filter)
+      if (!!changes.first()) {
+        return true
+      }
+      changeLog = changeLog.prev
+    }
+
+    return false
+  }
+
   renderChildren(children, parentNick) {
     if (!children || !children.size) {
       return ''
     }
-    const { roomName } = this.props
     let style = {}
     if (parentNick) {
       style = {
@@ -21,19 +40,21 @@ class _ChatThread extends Component {
         borderLeftColor: nickBgColor(parentNick).background,
       }
     }
+    const { now, tree } = this.props
     return (
       <div ref="children" className="children" style={style}>
         {children.valueSeq().map(msg =>
-          <ChatThread key={msg.id} roomName={roomName} parentId={msg.id} />
+          <ChatThread key={msg.id} msg={msg} now={now} tree={tree} />
         )}
       </div>
     )
   }
 
   render() {
-    const { childMessages, msg, roomName } = this.props
-    const msgNode = msg ? <Message msgId={msg.id} roomName={roomName} /> : null
-    const childrenNode = !!childMessages ? this.renderChildren(childMessages, msg && msg.sender.name) : null
+    const { msg, now, tree } = this.props
+    const children = msg ? tree.childrenOf(msg.id) : tree.childrenOf(null)
+    const msgNode = msg ? <Message msg={msg} hasChildren={!!children} now={now} /> : null
+    const childrenNode = !!children ? this.renderChildren(children, msg && msg.sender.name) : null
 
     return (
       <div className="thread">
@@ -44,23 +65,10 @@ class _ChatThread extends Component {
   }
 }
 
-_ChatThread.propTypes = {
-  childMessages: PropTypes.instanceOf(Immutable.OrderedMap),
+ChatThread.propTypes = {
   msg: PropTypes.object,
-  parentId: PropTypes.string,
-  roomName: PropTypes.string.isRequired,
+  now: PropTypes.instanceOf(Date).isRequired,
+  tree: PropTypes.instanceOf(Tree).isRequired,
 }
 
-function select(state, props) {
-  const { parentId, roomName } = props
-  const chat = state.chatSwitch.chats.get(roomName)
-  const msg = parentId ? chat.tree.get(parentId) : null
-  const childMessages = chat.tree.childrenOf(parentId)
-  return {
-    childMessages,
-    msg,
-  }
-}
-
-const ChatThread = connect(select)(_ChatThread)
 export default ChatThread

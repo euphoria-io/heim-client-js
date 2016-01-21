@@ -10,7 +10,7 @@ import UserList from './UserList'
 
 class ChatRoom extends Component {
   render() {
-    const { roomName, socketState, socketSwitch } = this.props
+    const { now, roomName, socketState, socketSwitch, tree } = this.props
     if (!roomName) {
       return null
     }
@@ -18,7 +18,7 @@ class ChatRoom extends Component {
       <div className="chat-room">
         <Connection socketState={socketState} />
         <div className="chat-room-content">
-          <Chat roomName={roomName} socketSwitch={socketSwitch} />
+          <Chat now={now} roomName={roomName} socketSwitch={socketSwitch} tree={tree} />
           <UserList roomName={roomName} />
         </div>
       </div>
@@ -27,6 +27,7 @@ class ChatRoom extends Component {
 }
 
 ChatRoom.propTypes = {
+  now: PropTypes.instanceOf(Date),
   roomName: PropTypes.string,
   socketState: PropTypes.string.isRequired,
   socketSwitch: PropTypes.instanceOf(SocketSwitch).isRequired,
@@ -35,7 +36,11 @@ ChatRoom.propTypes = {
 
 function select(state, props) {
   const { roomName } = props
-  return state.chatSwitch.chats.get(roomName)
+  const newState = state.chatSwitch.chats.get(roomName)
+  return {
+    ...newState,
+    now: state.now.now,
+  }
 }
 
 export default connect(select)(ChatRoom)

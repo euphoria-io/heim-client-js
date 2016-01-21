@@ -1,6 +1,6 @@
 import moment from 'moment'
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import { nickBgColor, nickBgLightColor } from '../lib/nick'
 
@@ -9,7 +9,7 @@ import UserText from './UserText'
 
 class Message extends Component {
   render() {
-    const { hasChildren, msg } = this.props
+    const { hasChildren, msg, now } = this.props
     let messageStyle = {}
     let nickStyle = nickBgColor(msg.sender.name)
     if (!!hasChildren) {
@@ -37,27 +37,19 @@ class Message extends Component {
         </div>
         <div className="content-and-time">
           <UserText className="content" style={contentStyle}>{content}</UserText>
-          <Timestamp at={moment.unix(msg.time)} />
+          <Timestamp at={moment.unix(msg.time)} now={now} />
         </div>
       </div>
     )
   }
 }
 
+Message.mixins = [PureRenderMixin]
+
 Message.propTypes = {
   hasChildren: PropTypes.bool,
   msg: PropTypes.object,
-  msgId: PropTypes.string.isRequired,
-  roomName: PropTypes.string.isRequired,
+  now: PropTypes.instanceOf(Date),
 }
 
-function select(state, props) {
-  const { msgId, roomName } = props
-  const chat = state.chatSwitch.chats.get(roomName)
-  return {
-    hasChildren: chat.tree.hasChildren(msgId),
-    msg: chat.tree.get(msgId),
-  }
-}
-
-export default connect(select)(Message)
+export default Message

@@ -1,6 +1,6 @@
 import moment from 'moment'
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 function isMoment(prop, propName) {
   if (!moment.isMoment(prop[propName])) {
@@ -24,11 +24,9 @@ class Timestamp extends Component {
 
 Timestamp.propTypes = {
   at: PropTypes.oneOfType([PropTypes.number, isMoment]).isRequired,
-  now: PropTypes.instanceOf(Date).isRequired,
+  now: PropTypes.instanceOf(Date),
 }
 
-function select(state) {
-  return state.now
-}
+Timestamp.mixins = [PureRenderMixin]
 
-export default connect(select)(Timestamp)
+export default Timestamp
