@@ -36,6 +36,7 @@ class Message extends Component {
         </div>
         <div className="content-and-time">
           <UserText
+            autolink
             className="content"
             style={contentStyle}
             content={content}

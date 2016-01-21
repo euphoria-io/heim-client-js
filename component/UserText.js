@@ -1,3 +1,4 @@
+import Autolinker from 'autolinker'
 import _ from 'lodash'
 import moment from 'moment'
 import React, { Component, PropTypes } from 'react'
@@ -13,6 +14,30 @@ function isMoment(prop, propName) {
     return new Error('not a Moment instance')
   }
 }
+
+const autolinker = new Autolinker({
+  phone: false,
+  truncate: 40,
+  twitter: false,
+  replaceFn(self, match) {
+    if (match.getType() === 'url') {
+      const url = match.getUrl()
+      const tag = self.getTagBuilder().build(match)
+
+      if (/^javasscript/.test(url.toLowerCase())) {
+        return false
+      }
+
+      if (location.protocol === 'https:' && RegExp('^https?:\/\/' + location.hostname).test(url)) {
+        tag.setAttr('href', url.replace(/^http:/, 'https:'))
+      } else {
+        tag.setAttr('rel', 'noreferrer')
+      }
+
+      return tag
+    }
+  },
+})
 
 class UserText extends Component {
   render() {
@@ -38,6 +63,10 @@ class UserText extends Component {
       )
     })
 
+    if (this.props.autolink) {
+      html = autolinker.link(html)
+    }
+
     const { now, timestamp } = this.props
     if (timestamp) {
       html += ReactDOMServer.renderToStaticMarkup(
@@ -58,8 +87,9 @@ class UserText extends Component {
 }
 
 UserText.propTypes = {
+  autolink: PropTypes.bool,
   content: PropTypes.string.isRequired,
-  timestamp: PropTypes.oneOfType([PropTypes.number, isMoment]).isRequired,
+  timestamp: PropTypes.oneOfType([PropTypes.number, isMoment]),
   now: PropTypes.instanceOf(Date),
 }
 

@@ -35,6 +35,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "autolinker": "^0.22.0",
     "babel-polyfill": "^6.3.14",
     "babel-runtime": "^6.3.19",
     "emoji-annotation-to-unicode": "^0.2.2",
