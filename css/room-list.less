@@ -1,9 +1,21 @@
 flex: 0 0 @sidebar-width;
-padding-top: @topbar-height+2rem; // TODO: log instead of padding
-padding-left: 2rem;
-padding-right: 2rem;
 
-background: #eee;
+background: @bg0;
+
+.bar {
+  flex: 0 0 0.5rem;
+  background-image: data-uri('../res/rainbowbar.svg');
+  background-position: center center;
+  background-size: 100% 100%;
+  height: 0.5rem;
+  margin-bottom: @topbar-height+2.5rem; // TODO: log instead of padding
+  z-index: 10;
+}
+
+.room-list, h1 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
 
 time {
   display: none;
@@ -12,9 +24,13 @@ time {
 .room-list {
   font-size: 1.5rem;
 
+  .room {
+    line-height: 1.5em;
+  }
+
   a {
     color: black;
-    font-weight: bold;
+    font-weight: 400;
     text-decoration: none;
   }
 }

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="rainbowbar.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6"
+     inkscape:cx="77.924297"
+     inkscape:cy="13.027549"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="2556"
+     inkscape:window-height="1401"
+     inkscape:window-x="0"
+     inkscape:window-y="37"
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     units="px"
+     showborder="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4138"
+       originx="-171.54617"
+       originy="-547.37848" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by/3.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g4194">
+      <rect
+         y="0"
+         x="0"
+         height="100%"
+         width="20%"
+         id="rect4140"
+         style="opacity:1;fill:#d95d3f;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-opacity:1" />
+      <rect
+         y="0"
+         x="20%"
+         height="100%"
+         width="20%"
+         id="rect4140-7"
+         style="opacity:1;fill:#f29526;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-opacity:1" />
+      <rect
+         y="0"
+         x="40%"
+         height="100%"
+         width="20%"
+         id="rect4140-8"
+         style="opacity:1;fill:#5abe6b;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-opacity:1" />
+      <rect
+         y="0"
+         x="60%"
+         height="100%"
+         width="20%"
+         id="rect4140-5"
+         style="opacity:1;fill:#4c97cb;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-opacity:1" />
+      <rect
+         y="0"
+         x="80%"
+         height="100%"
+         width="20%"
+         id="rect4140-1"
+         style="opacity:1;fill:#7f62b6;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

@@ -6,10 +6,35 @@ z-index: 5;
 
 .connection {
   flex: 0 0 @topbar-height;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: middle;
   padding-left: 1rem;
   padding-right: 1rem;
+  padding-bottom: 1rem;
+
+  background: @bg1;
+  border-top: 0.5rem solid @fg0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 10;
+
+  .spacer {
+    flex: auto;
+  }
+
+  .room {
+    flex: none;
+
+    .room-name {
+      color: @fg1;
+      display: block;
+      font-size: 3em;
+      font-weight: 800;
+    }
+  }
+
+  .connection-state {
+  }
 }
 
 .chat-room-content {
@@ -101,7 +126,8 @@ z-index: 5;
 .users {
   display: flex;
   flex-flow: column nowrap;
-  background: #eee;
+  background: @bg2;
+  border-left: 1px solid @fg2;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   overflow-x: hidden;

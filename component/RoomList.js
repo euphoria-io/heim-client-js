@@ -19,6 +19,7 @@ function RoomList({ now, push, rooms }) {
 
   return (
     <div className="rooms">
+      <div className="bar" />
       <h1>rooms</h1>
       <div className="room-list">
         {rooms

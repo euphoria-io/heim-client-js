@@ -16,7 +16,7 @@ class ChatRoom extends Component {
     }
     return (
       <div className="chat-room">
-        <Connection socketState={socketState} />
+        <Connection roomName={roomName} socketState={socketState} />
         <div className="chat-room-content">
           <Chat now={now} roomName={roomName} socketSwitch={socketSwitch} tree={tree} />
           <UserList roomName={roomName} />

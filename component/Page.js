@@ -12,9 +12,9 @@ export default function Page({ title, html, scriptHash, cssFiles }) {
         />
         <title>{title}</title>
         <link
-          href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,600,800'
-          rel='stylesheet'
-          type='text/css'
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,600,800"
+          rel="stylesheet"
+          type="text/css"
         />
         {_.map(cssFiles, cssName =>
           <link rel="stylesheet" type="text/css" id="css" href={'/' + cssName} />
