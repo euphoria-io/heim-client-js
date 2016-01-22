@@ -165,7 +165,7 @@ export default function socketMiddleware(endpoint) {
   return store => {
     const socketSwitch = new SocketSwitch(store, endpoint)
 
-    return (next) => (action) => {
+    return next => action => {
       const result = next(action)
 
       switch (action.type) {
