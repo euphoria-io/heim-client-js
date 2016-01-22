@@ -1,7 +1,5 @@
 import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-
 import { nickBgColor } from '../lib/nick'
 
 import UserText from './UserText'
@@ -26,6 +24,9 @@ class UserList extends Component {
 
   render() {
     const { users } = this.props
+    if (!users) {
+      return null
+    }
     const groups = users.groupBy(v => /^bot:/.test(v.id) ? 'bots' : 'people')
 
     function uniqSeq(list) {
@@ -63,11 +64,4 @@ UserList.propTypes = {
   users: PropTypes.instanceOf(Immutable.Map).isRequired,
 }
 
-function select(state, props) {
-  const { chatSwitch } = state
-  const { roomName } = props
-  const { users } = chatSwitch.chats.get(roomName)
-  return { roomName, users }
-}
-
-export default connect(select)(UserList)
+export default UserList

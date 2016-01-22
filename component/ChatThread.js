@@ -52,6 +52,9 @@ class ChatThread extends Component {
 
   render() {
     const { msg, now, tree } = this.props
+    if (!tree) {
+      return null
+    }
     const children = msg ? tree.childrenOf(msg.id) : tree.childrenOf(null)
     const msgNode = msg ? <Message msg={msg} hasChildren={!!children.size} now={now} /> : null
     const childrenNode = !!children.size ? this.renderChildren(children, msg && msg.sender.name) : null

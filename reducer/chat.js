@@ -101,7 +101,7 @@ function updateLocation(state, loc) {
   if (!loc) {
     return state
   }
-  const match = loc.pathname.match(/((pm:)?\w+)\/$/)
+  const match = loc.pathname.match(/((pm:)?\w+)\/?$/)
   if (!match) {
     return state
   }
@@ -121,7 +121,8 @@ const initialState = {
 export default function chatSwitch(state = initialState, action) {
   switch (action.type) {
     case UPDATE_LOCATION:
-      return updateLocation(state, action.location)
+      const loc = action.location || action.payload
+      return updateLocation(state, loc)
     default:
       const chatState = state.chats.get(
         action.roomName, { ...initialChatState, roomName: action.roomName })

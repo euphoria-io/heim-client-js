@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
@@ -10,7 +11,7 @@ import UserList from './UserList'
 
 class ChatRoom extends Component {
   render() {
-    const { now, roomName, socketState, socketSwitch, tree } = this.props
+    const { now, roomName, socketState, socketSwitch, tree, users } = this.props
     if (!roomName) {
       return null
     }
@@ -19,7 +20,7 @@ class ChatRoom extends Component {
         <Connection roomName={roomName} socketState={socketState} />
         <div className="chat-room-content">
           <Chat now={now} roomName={roomName} socketSwitch={socketSwitch} tree={tree} />
-          <UserList roomName={roomName} />
+          <UserList roomName={roomName} users={users} />
         </div>
       </div>
     )
@@ -32,6 +33,7 @@ ChatRoom.propTypes = {
   socketState: PropTypes.string.isRequired,
   socketSwitch: PropTypes.instanceOf(SocketSwitch).isRequired,
   tree: PropTypes.instanceOf(Tree).isRequired,
+  users: PropTypes.instanceOf(Immutable.Map).isRequired,
 }
 
 function select(state, props) {
