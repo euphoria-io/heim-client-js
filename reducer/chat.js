@@ -98,6 +98,9 @@ function chat(state = initialChatState, action) {
 }
 
 function updateLocation(state, loc) {
+  if (!loc) {
+    return state
+  }
   const match = loc.pathname.match(/((pm:)?\w+)\/$/)
   if (!match) {
     return state
