@@ -24,7 +24,14 @@ function messageReceived(state, roomName, packet) {
   }
 }
 
-export default function rooms(state = Immutable.Map(), action) {
+const initialState = Immutable.Map({
+  music: Immutable.Map(),
+  space: Immutable.Map(),
+  welcome: Immutable.Map(),
+  xkcd: Immutable.Map(),
+})
+
+export default function rooms(state = initialState, action) {
   switch (action.type) {
     case WS_MESSAGE_RECEIVED:
       return messageReceived(state, action.roomName, action.packet)
