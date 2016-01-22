@@ -39,7 +39,7 @@ function select(state, props) {
   const newState = state.chatSwitch.chats.get(roomName)
   return {
     ...newState,
-    now: state.now.now,
+    now: state.now,
   }
 }
 

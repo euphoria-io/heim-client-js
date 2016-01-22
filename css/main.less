@@ -1,17 +1,24 @@
+@import 'emoji';
+
+@base-font-size: 11pt;
+
+@sidebar-width: 15rem;
+@topbar-height: 10rem;
+
 @nick-horizontal-padding: 0.3rem;
 @nick-vertical-padding: 0.2rem;
 
 body {
-  font-family: Droid Sans, sans-serif;
-  font-size: 12pt;
+  font-family: 'Open Sans', sans-serif;
+  font-size: @base-font-size;
   overflow: hidden;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
 }
 
-#app > div > div {
+.app-container {
   display: flex;
-  flex-direction: column;
+  flex-flow: row nowrap;
 
   width: 100vw;
   height: 100vh;
@@ -20,14 +27,6 @@ body {
 
 .chat-room {
   @import 'chat';
-
-  .connection {
-    height: 2rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding-left: 1rem;
-    padding-right: 1rem;
-    z-index: 10;
-  }
 }
 
 .nick {
@@ -37,4 +36,21 @@ body {
   white-space: nowrap;
 }
 
-@import 'emoji';
+h1 {
+  color: #999;
+  font-variant: small-caps;
+  font-weight: medium;
+  font-size: larger;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+time {
+  color: #999;
+  font-size: small;
+  margin-left: 0.5rem;
+}
+
+.rooms {
+  @import 'room-list';
+}

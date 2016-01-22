@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 
 import chatSwitch from './chat'
 import now from './now'
+import rooms from './rooms'
 import socketLog from './socketLog'
 
 export default function rootReducer(externalState) {
@@ -9,6 +10,7 @@ export default function rootReducer(externalState) {
     ...externalState,
     chatSwitch,
     now,
+    rooms,
     socketLog,
   })
 }

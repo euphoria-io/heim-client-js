@@ -1,6 +1,19 @@
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+display: flex;
+flex-flow: column nowrap;
+height: 100%;
+z-index: 5;
+
+.connection {
+  flex: 0 0 @topbar-height;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  z-index: 10;
+}
+
 .chat-room-content {
   display: flex;
-  flex: 1;
   flex-direction: row;
   overflow: hidden;
 }
@@ -29,9 +42,6 @@
 
   time {
     display: none;
-    color: #999;
-    font-size: small;
-    margin-left: 0.5rem;
   }
 
   &.emote {
@@ -63,7 +73,6 @@
     overflow-y: scroll;
     margin-left: 0;
     padding: 0.5rem 0.5rem 0.5rem 0;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
 }
@@ -98,15 +107,6 @@
   overflow-x: hidden;
   overflow-y: auto;
   width: 160px;
-
-  h1 {
-    color: #999;
-    font-variant: small-caps;
-    font-weight: medium;
-    font-size: larger;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
 
   .user-list {
     flex-shrink: 1;

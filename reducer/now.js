@@ -1,8 +1,8 @@
 import { TICK } from '../const'
 
-export default function now(state = { now: null }, action) {
+export default function now(state = null, action) {
   if (action.type === TICK) {
-    return { now: action.now }
+    return action.now
   }
   return state
 }

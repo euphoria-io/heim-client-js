@@ -11,6 +11,11 @@ export default function Page({ title, html, scriptHash, cssFiles }) {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
         />
         <title>{title}</title>
+        <link
+          href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,600,800'
+          rel='stylesheet'
+          type='text/css'
+        />
         {_.map(cssFiles, cssName =>
           <link rel="stylesheet" type="text/css" id="css" href={'/' + cssName} />
         )}
