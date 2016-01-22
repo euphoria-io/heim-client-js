@@ -7,12 +7,16 @@ import thunk from 'redux-thunk'
 
 import { WS_MESSAGE_RECEIVED, WS_MESSAGE_SENT } from '../const'
 
+import socketMiddleware from '../middleware/socketMiddleware'
+
 import rootReducer from '../reducer'
 
 export default function newStore(history, initialState) {
   let engine
   const rrm = syncHistory(history)
+
   const middleware = [
+    socketMiddleware('https://euphoria.io'), // must come before rrm
     rrm,
     thunk,
   ]

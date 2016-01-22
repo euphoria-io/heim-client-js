@@ -8,7 +8,6 @@ import Home from './component/Home'
 import RoomList from './component/RoomList'
 
 import Clock from './lib/Clock'
-import SocketSwitch from './lib/SocketSwitch'
 
 import renderStaticPage from './site/server'
 import newStore from './site/store'
@@ -17,12 +16,11 @@ const inBrowser = typeof document !== 'undefined'
 const history = inBrowser ? browserHistory : createMemoryHistory()
 
 const store = newStore(history)
-const socketSwitch = new SocketSwitch(store, 'https://euphoria.io')
 
 const bindSocket = (Component, props) => { // eslint-disable-line no-shadow
   const { params } = props
   const { roomName } = params
-  return <Component roomName={roomName} socketSwitch={socketSwitch} {...props} />
+  return <Component roomName={roomName} {...props} />
 }
 
 bindSocket.propTypes = {
