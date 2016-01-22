@@ -11,7 +11,7 @@ function RoomList({ now, push, rooms }) {
     const href = `/room/${roomName}/`
     return (
       <div key={roomName} className="room">
-        <Link push={push} to={href}>&amp;{roomName}</Link>
+        <Link push={push} to={href}>{roomName}</Link>
         <Timestamp at={moment.unix(room.get('lastActive'))} now={now} />
       </div>
     )

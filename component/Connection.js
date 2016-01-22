@@ -7,7 +7,7 @@ class Connection extends Component {
       <div className="connection">
         <div className="spacer" />
         <div className="room">
-          <span className="room-name">&amp;{roomName}</span>
+          <span className="room-name">{roomName}</span>
           Room description goes here.
         </div>
         <div className="spacer" />
