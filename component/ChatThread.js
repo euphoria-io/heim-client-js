@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { nickBgColor } from '../lib/nick'
 import Tree from '../lib/Tree'
 
+import ChatEntry from './ChatEntry'
 import Message from './Message'
 
 class ChatThread extends Component {
@@ -40,35 +41,39 @@ class ChatThread extends Component {
         borderLeftColor: nickBgColor(parentNick).background,
       }
     }
-    const { now, tree } = this.props
+    const { entry, now, tree } = this.props
     return (
       <div ref="children" className="children" style={style}>
         {children.valueSeq().map(msg =>
-          <ChatThread key={msg.id} msg={msg} now={now} tree={tree} />
+          <ChatThread entry={entry} key={msg.id} msg={msg} now={now} tree={tree} />
         )}
       </div>
     )
   }
 
   render() {
-    const { msg, now, tree } = this.props
+    const { entry, msg, now, tree } = this.props
     if (!tree) {
       return null
     }
+
     const children = msg ? tree.childrenOf(msg.id) : tree.childrenOf(null)
     const msgNode = msg ? <Message msg={msg} hasChildren={!!children.size} now={now} /> : null
     const childrenNode = !!children.size ? this.renderChildren(children, msg && msg.sender.name) : null
+    const attachEntry = (!msg && !entry.parentId) || msg.id === entry.parentId
 
     return (
       <div className="thread">
         {msgNode}
         {childrenNode}
+        {attachEntry ? entry : null}
       </div>
     )
   }
 }
 
 ChatThread.propTypes = {
+  entry: PropTypes.instanceOf(ChatEntry).isRequired,
   msg: PropTypes.object,
   now: PropTypes.instanceOf(Date).isRequired,
   tree: PropTypes.instanceOf(Tree).isRequired,

@@ -10,6 +10,8 @@ const initialChatState = {
   oldestDisplayedMsgId: null,
   oldestMsgId: null,
 
+  nick: null,
+
   roomName: null,
   socketState: 'disconnected',
   tree: new Tree(),
@@ -74,7 +76,7 @@ function messageReceived(state, packet) {
       for (let i = 0; i < packet.data.log.length; i++) {
         newState = addMessage(newState, packet.data.log[i], true)
       }
-      return { ...newState, fetching: false }
+      return { ...newState, nick: packet.data.nick, fetching: false }
     default:
       return state
   }

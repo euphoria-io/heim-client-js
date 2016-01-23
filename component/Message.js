@@ -4,24 +4,20 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import { nickBgColor, nickBgLightColor } from '../lib/nick'
 
+import Nick from './Nick'
 import UserText from './UserText'
 
 class Message extends Component {
   render() {
     const { hasChildren, msg, now } = this.props
     let messageStyle = {}
-    let nickStyle = nickBgColor(msg.sender.name)
-    if (!!hasChildren) {
-      nickStyle = {
-        ...nickStyle,
-        borderBottomLeftRadius: 0,
-      }
+    if (hasChildren) {
       messageStyle = {
         ...messageStyle,
         borderTopLeftRadius: '0.3rem',
         borderLeftStyle: 'solid',
         borderLeftWidth: '2px',
-        borderLeftColor: nickStyle.background,
+        borderLeftColor: nickBgColor(msg.sender.name).background,
       }
     }
 
@@ -32,7 +28,7 @@ class Message extends Component {
     return (
       <div className={className} style={messageStyle}>
         <div className="sender">
-          <UserText className="nick" style={nickStyle} content={msg.sender.name} />
+          <Nick name={msg.sender.name} withThreadLine={hasChildren} />
         </div>
         <div className="content-and-time">
           <UserText
