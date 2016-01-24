@@ -5,7 +5,15 @@ import { WS_CONNECTING, WS_CONNECTED, WS_DISCONNECTED, WS_MESSAGE_RECEIVED, WS_M
 
 import Tree from '../lib/Tree'
 
+const initialAuthState = {
+  failureReason: null,
+  pending: true,
+  required: false,
+}
+
 const initialChatState = {
+  auth: initialAuthState,
+
   fetching: true,
   oldestDisplayedMsgId: null,
   oldestMsgId: null,
@@ -43,6 +51,10 @@ function removeUser(state, sessionId) {
 
 function messageSent(state, packet) {
   switch (packet.type) {
+    case 'auth':
+      let auth = state.auth
+      auth = { ...auth, pending: true }
+      return { ...state, auth }
     case 'log':
       return { ...state, fetching: true }
     default:
@@ -52,7 +64,23 @@ function messageSent(state, packet) {
 
 function messageReceived(state, packet) {
   let newState = state
+  let auth = newState.auth
   switch (packet.type) {
+    case 'auth-reply':
+      auth = { ...auth, pending: false }
+      if (packet.data.success) {
+        auth.required = false
+      } else {
+        auth.failureReason = packet.data.reason
+      }
+      return { ...newState, auth }
+    case 'bounce-event':
+      if (packet.data.reason === 'authentication required') {
+        auth.required = false
+        return { ...newState, auth: true }
+      }
+      // TODO: handle getting banned
+      return newState
     case 'join-event':
       return addUser(state, packet.data)
     case 'log-reply':
@@ -76,7 +104,8 @@ function messageReceived(state, packet) {
       for (let i = 0; i < packet.data.log.length; i++) {
         newState = addMessage(newState, packet.data.log[i], true)
       }
-      return { ...newState, nick: packet.data.nick, fetching: false }
+      auth = { ...auth, pending: false, required: false }
+      return { ...newState, auth, nick: packet.data.nick, fetching: false }
     default:
       return state
   }

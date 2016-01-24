@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react'
 import { nickBgColor } from '../lib/nick'
 import Tree from '../lib/Tree'
 
-import ChatEntry from './ChatEntry'
 import Message from './Message'
 
 class ChatThread extends Component {
@@ -73,7 +72,7 @@ class ChatThread extends Component {
 }
 
 ChatThread.propTypes = {
-  entry: PropTypes.instanceOf(ChatEntry).isRequired,
+  entry: PropTypes.element.isRequired,
   msg: PropTypes.object,
   now: PropTypes.instanceOf(Date).isRequired,
   tree: PropTypes.instanceOf(Tree).isRequired,

@@ -5,13 +5,13 @@ import Nick from './Nick'
 
 class ChatEntry extends Component {
   render() {
-    const { nick } = this.props
+    const { id, nick } = this.props
     return (
-      <div className="chat-entry">
+      <div id={id} className="chat-entry">
         <div className="sender">
           <Nick name={nick || 'your name here'} />
         </div>
-        <textarea>chat here</textarea>
+        <textarea defaultValue="chat here" />
       </div>
     )
   }
@@ -20,6 +20,7 @@ class ChatEntry extends Component {
 ChatEntry.mixins = [PureRenderMixin]
 
 ChatEntry.propTypes = {
+  id: PropTypes.string.isRequired,
   nick: PropTypes.string,
   parentId: PropTypes.string,
 }

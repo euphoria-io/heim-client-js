@@ -9,14 +9,12 @@ import UserList from './UserList'
 
 class ChatRoom extends Component {
   componentDidUpdate() {
-    console.log('update')
     const { chat, dispatch } = this.props
     if (!chat) {
       return
     }
     if (!chat.fetching && !chat.complete && chat.oldestDisplayedMsgId) {
       if (chat.tree.needMore(chat.oldestDisplayedMsgId)) {
-        console.log('fetching')
         dispatch({
           type: SEND_PACKET,
           roomName: chat.roomName,
@@ -28,26 +26,22 @@ class ChatRoom extends Component {
             },
           },
         })
-      } else {
-        console.log('tree is satisfied')
       }
-    } else {
-      console.log('already fetching or no reason to fetch')
     }
   }
 
   render() {
-    const { now, chat } = this.props
+    const { chat, dispatch, now } = this.props
     if (!chat) {
       return null
     }
 
-    const { nick, roomName, socketState, tree, users } = chat
+    const { nick, oldestMsgId, roomName, socketState, tree, users } = chat
     return (
       <div className="chat-room">
         <Connection roomName={roomName} socketState={socketState} />
         <div className="chat-room-content">
-          <Chat nick={nick} now={now} roomName={roomName} tree={tree} />
+          <Chat dispatch={dispatch} nick={nick} now={now} oldestMsgId={oldestMsgId} roomName={roomName} tree={tree} />
           <UserList roomName={roomName} users={users} />
         </div>
       </div>
