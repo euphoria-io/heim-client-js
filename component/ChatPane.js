@@ -9,7 +9,7 @@ import ChatEntry from './ChatEntry'
 import ChatThread from './ChatThread'
 import ScrollFollower from './ScrollFollower'
 
-class Chat extends Component {
+class ChatPane extends Component {
   render() {
     const { dispatch, nick, now, oldestMsgId, roomName, tree } = this.props
     const chatEntry = <ChatEntry id="chat-entry" nick={nick} />
@@ -36,9 +36,9 @@ class Chat extends Component {
   }
 }
 
-Chat.mixins = [PureRenderMixin]
+ChatPane.mixins = [PureRenderMixin]
 
-Chat.propTypes = {
+ChatPane.propTypes = {
   dispatch: PropTypes.func.isRequired,
   nick: PropTypes.string,
   now: PropTypes.instanceOf(Date),
@@ -47,4 +47,4 @@ Chat.propTypes = {
   tree: PropTypes.instanceOf(Tree).isRequired,
 }
 
-export default Chat
+export default ChatPane
