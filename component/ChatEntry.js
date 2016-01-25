@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
+import { MOVE_CHAT_ENTRY } from '../const'
+
+import KeyboardHandler from './KeyboardHandler'
 import Nick from './Nick'
 
 class ChatEntry extends Component {
@@ -12,19 +15,31 @@ class ChatEntry extends Component {
   }
 
   render() {
-    const { id, nick } = this.props
+    const { dispatch, id, nick, pane, roomName } = this.props
+    const move = dir => () => {
+      console.log('move', dir)
+      return dispatch({
+        type: MOVE_CHAT_ENTRY,
+        roomName,
+        dir,
+      })
+    }
     const onChange = () => {
       this.resize()
     }
     const onClick = onChange
     return (
-      <div id={id} className="chat-entry">
+      <KeyboardHandler id={id} className="chat-entry" listenTo={pane} keys={{
+        escape: move('top'),
+        up: move('up'),
+      }}
+      >
         <div className="sender">
           <Nick name={nick || 'your name here'} />
         </div>
         <textarea ref="input" defaultValue="chat here" onChange={onChange} onClick={onClick} />
         <textarea ref="measure" className="measure" />
-      </div>
+      </KeyboardHandler>
     )
   }
 }
@@ -32,9 +47,12 @@ class ChatEntry extends Component {
 ChatEntry.mixins = [PureRenderMixin]
 
 ChatEntry.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   nick: PropTypes.string,
+  pane: PropTypes.object.isRequired,
   parentId: PropTypes.string,
+  roomName: PropTypes.string,
 }
 
 export default ChatEntry

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import { SEND_PACKET } from '../const'
@@ -7,12 +7,15 @@ import Tree from '../lib/Tree'
 
 import ChatEntry from './ChatEntry'
 import ChatThread from './ChatThread'
+import Pane from './Pane'
 import ScrollFollower from './ScrollFollower'
 
-class ChatPane extends Component {
+class ChatPane extends Pane {
   render() {
     const { dispatch, nick, now, oldestMsgId, roomName, tree } = this.props
-    const chatEntry = <ChatEntry id="chat-entry" nick={nick} />
+    const chatEntry = (
+      <ChatEntry id="chat-entry" dispatch={dispatch} nick={nick} pane={this} roomname={roomName} />
+    )
     const fetchMore = () => {
       if (oldestMsgId) {
         dispatch({
