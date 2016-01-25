@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { SEND_PACKET } from '../const'
 
-import Chat from './Chat'
+import ChatPane from './ChatPane'
 import Connection from './Connection'
 import UserList from './UserList'
 
@@ -41,7 +41,14 @@ class ChatRoom extends Component {
       <div className="chat-room">
         <Connection roomName={roomName} socketState={socketState} />
         <div className="chat-room-content">
-          <Chat dispatch={dispatch} nick={nick} now={now} oldestMsgId={oldestMsgId} roomName={roomName} tree={tree} />
+          <ChatPane
+            dispatch={dispatch}
+            nick={nick}
+            now={now}
+            oldestMsgId={oldestMsgId}
+            roomName={roomName}
+            tree={tree}
+          />
           <UserList roomName={roomName} users={users} />
         </div>
       </div>
