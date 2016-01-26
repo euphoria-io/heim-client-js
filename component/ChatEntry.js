@@ -1,12 +1,18 @@
 import React, { Component, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
-import { MOVE_CURSOR } from '../const'
+import { EDIT_TEXT, MOVE_CURSOR } from '../const'
 
 import KeyboardHandler from './KeyboardHandler'
 import Nick from './Nick'
 
 class ChatEntry extends Component {
+  componentDidMount() {
+    const el = ReactDOM.findDOMNode(this.refs.input)
+    el.focus()
+  }
+
   resize() {
     const { input, measure } = this.refs
     measure.style.width = input.offsetWidth + 'px'
@@ -15,17 +21,21 @@ class ChatEntry extends Component {
   }
 
   render() {
-    const { dispatch, id, nick, pane, roomName } = this.props
+    const { dispatch, id, nick, pane, roomName, value } = this.props
     const move = dir => () => {
-      console.log('move', dir)
       return dispatch({
         type: MOVE_CURSOR,
         roomName,
         dir,
       })
     }
-    const onChange = () => {
+    const onChange = ev => {
       this.resize()
+      dispatch({
+        type: EDIT_TEXT,
+        roomName,
+        text: ev.target.value,
+      })
     }
     const onClick = onChange
     return (
@@ -39,7 +49,7 @@ class ChatEntry extends Component {
         <div className="sender">
           <Nick name={nick || 'your name here'} />
         </div>
-        <textarea ref="input" defaultValue="chat here" onChange={onChange} onClick={onClick} />
+        <textarea ref="input" defaultValue={value} onChange={onChange} onClick={onClick} />
         <textarea ref="measure" className="measure" />
       </KeyboardHandler>
     )
@@ -55,6 +65,7 @@ ChatEntry.propTypes = {
   pane: PropTypes.object.isRequired,
   parentId: PropTypes.string,
   roomName: PropTypes.string,
+  value: PropTypes.string.isRequired,
 }
 
 export default ChatEntry

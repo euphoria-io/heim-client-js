@@ -36,20 +36,12 @@ class ChatRoom extends Component {
       return null
     }
 
-    const { cursorParent, nick, oldestMsgId, roomName, socketState, tree, users } = chat
+    const { roomName, socketState, users } = chat
     return (
       <div className="chat-room">
         <Connection roomName={roomName} socketState={socketState} />
         <div className="chat-room-content">
-          <ChatPane
-            cursorParent={cursorParent}
-            dispatch={dispatch}
-            nick={nick}
-            now={now}
-            oldestMsgId={oldestMsgId}
-            roomName={roomName}
-            tree={tree}
-          />
+          <ChatPane chat={chat} dispatch={dispatch} now={now} roomName={roomName} />
           <UserList roomName={roomName} users={users} />
         </div>
       </div>

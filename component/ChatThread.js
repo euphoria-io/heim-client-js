@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
 import { nickBgColor } from '../lib/nick'
-import Tree from '../lib/Tree'
 
 import ChatEntry from './ChatEntry'
 import Message from './Message'
@@ -9,7 +8,9 @@ import Pane from './Pane'
 
 class ChatThread extends Component {
   shouldComponentUpdate(nextProps) {
-    const { msg, now, tree } = this.props
+    const { chat, msg, now } = this.props
+    const { tree } = chat
+
     if (msg !== nextProps.msg || now !== nextProps.now) {
       return true
     }
@@ -17,7 +18,7 @@ class ChatThread extends Component {
     // Look for changes under descendants of this thread's root message.
     const prefix = msg ? tree.paths.get(msg.id) : ''
     const filter = path => path.startsWith(prefix)
-    let changeLog = nextProps.tree.changeLog
+    let changeLog = nextProps.chat.tree.changeLog
     while (changeLog && changeLog !== tree.changeLog) {
       const changes = changeLog.paths.filter(filter)
       if (!!changes.first()) {
@@ -42,20 +43,18 @@ class ChatThread extends Component {
         borderLeftColor: nickBgColor(parentNick).background,
       }
     }
-    const { cursorParent, dispatch, nick, now, pane, roomName, tree } = this.props
+    const { chat, dispatch, now, pane, roomName } = this.props
     return (
       <div ref="children" className="children" style={style}>
         {children.valueSeq().map(msg =>
-          <ChatThread
-            cursorParent={cursorParent}
+          <ChatThread chat={chat}
+            chat={chat}
             dispatch={dispatch}
             key={msg.id}
-            nick={nick}
             msg={msg}
             now={now}
             pane={pane}
             roomName={roomName}
-            tree={tree}
           />
         )}
       </div>
@@ -63,7 +62,9 @@ class ChatThread extends Component {
   }
 
   renderChatEntry() {
-    const { cursorParent, dispatch, nick, pane, roomName } = this.props
+    const { chat, dispatch, pane, roomName } = this.props
+    const { cursorParent, editorText, nick } = chat
+
     return (
       <ChatEntry
         id="chat-entry"
@@ -72,6 +73,7 @@ class ChatThread extends Component {
         pane={pane}
         parentId={cursorParent}
         roomName={roomName}
+        value={editorText}
       />
     )
   }
@@ -93,7 +95,8 @@ class ChatThread extends Component {
   }
 
   render() {
-    const { cursorParent, msg, tree } = this.props
+    const { chat, msg } = this.props
+    const { cursorParent, tree } = chat
     if (!tree) {
       return null
     }
@@ -115,14 +118,12 @@ class ChatThread extends Component {
 }
 
 ChatThread.propTypes = {
-  cursorParent: PropTypes.string,
+  chat: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   msg: PropTypes.object,
-  nick: PropTypes.string,
   now: PropTypes.instanceOf(Date).isRequired,
   pane: PropTypes.instanceOf(Pane).isRequired,
   roomName: PropTypes.string.isRequired,
-  tree: PropTypes.instanceOf(Tree).isRequired,
 }
 
 export default ChatThread

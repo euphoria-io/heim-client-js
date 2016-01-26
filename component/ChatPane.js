@@ -3,24 +3,22 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import { SEND_PACKET } from '../const'
 
-import Tree from '../lib/Tree'
-
 import ChatThread from './ChatThread'
 import Pane from './Pane'
 import ScrollFollower from './ScrollFollower'
 
 class ChatPane extends Pane {
   render() {
-    const { cursorParent, dispatch, nick, now, oldestMsgId, roomName, tree } = this.props
+    const { chat, dispatch, now, roomName } = this.props
     const fetchMore = () => {
-      if (oldestMsgId) {
+      if (chat.oldestMsgId) {
         dispatch({
           type: SEND_PACKET,
           roomName,
           packet: {
             type: 'log',
             data: {
-              before: oldestMsgId,
+              before: chat.oldestMsgId,
               n: 100,
             },
           },
@@ -29,15 +27,7 @@ class ChatPane extends Pane {
     }
     return (
       <ScrollFollower className="children top" cursor="chat-entry" fetchMore={fetchMore}>
-        <ChatThread
-          cursorParent={cursorParent}
-          dispatch={dispatch}
-          nick={nick}
-          now={now}
-          pane={this}
-          roomName={roomName}
-          tree={tree}
-        />
+        <ChatThread chat={chat} dispatch={dispatch} now={now} pane={this} roomName={roomName} />
       </ScrollFollower>
     )
   }
@@ -46,13 +36,10 @@ class ChatPane extends Pane {
 ChatPane.mixins = [PureRenderMixin]
 
 ChatPane.propTypes = {
-  cursorParent: PropTypes.string,
+  chat: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
-  nick: PropTypes.string,
   now: PropTypes.instanceOf(Date),
-  oldestMsgId: PropTypes.string,
   roomName: PropTypes.string.isRequired,
-  tree: PropTypes.instanceOf(Tree).isRequired,
 }
 
 export default ChatPane

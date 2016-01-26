@@ -2,7 +2,8 @@ import Immutable from 'immutable'
 import { UPDATE_LOCATION } from 'redux-simple-router'
 
 import {
-  MOVE_CURSOR, WS_CONNECTING, WS_CONNECTED, WS_DISCONNECTED, WS_MESSAGE_RECEIVED, WS_MESSAGE_SENT,
+  EDIT_TEXT, MOVE_CURSOR,
+  WS_CONNECTING, WS_CONNECTED, WS_DISCONNECTED, WS_MESSAGE_RECEIVED, WS_MESSAGE_SENT,
 } from '../const'
 
 import Tree from '../lib/Tree'
@@ -17,6 +18,7 @@ const initialChatState = {
   auth: initialAuthState,
 
   cursorParent: null,
+  editorText: '',
 
   fetching: true,
   oldestDisplayedMsgId: null,
@@ -154,6 +156,8 @@ function moveCursor(state, dir, parentId) {
 
 function chat(state = initialChatState, action) {
   switch (action.type) {
+    case EDIT_TEXT:
+      return { ...state, editorText: action.text }
     case MOVE_CURSOR:
       const newState = moveCursor(state, action.dir, action.msgId)
       console.log('cursor parent:', newState.cursorParent)
