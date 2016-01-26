@@ -139,9 +139,6 @@ function moveCursor(state, dir, parentId) {
     case 'down':
       {
         const msgId = tree.nextParent(cursorParent)
-        if (msgId === null) {
-          return state
-        }
         return { ...state, cursorParent: msgId }
       }
     case 'left':
@@ -166,7 +163,6 @@ function chat(state = initialChatState, action) {
       return { ...state, editor: action.editor }
     case MOVE_CURSOR:
       const newState = moveCursor(state, action.dir, action.msgId)
-      console.log('cursor parent:', newState.cursorParent)
       return { ...newState, tree: newState.tree.touch(state.cursorParent, newState.cursorParent) }
     case WS_CONNECTING:
       return { ...state, socketState: 'connecting' }
