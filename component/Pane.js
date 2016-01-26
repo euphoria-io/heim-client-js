@@ -12,7 +12,6 @@ export default class Pane extends Component {
   componentDidMount() {
     console.log('pane did mount')
     if (typeof window !== 'undefined') {
-      console.log('registering bindings', this._prebindings)
       const Mousetrap = require('mousetrap')
       this._mousetrap = Mousetrap(ReactDOM.findDOMNode(this))
       _.forEach(this._prebindings, (value, key) => this._mousetrap.bind(key, value))

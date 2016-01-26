@@ -1,7 +1,9 @@
 import Immutable from 'immutable'
 import { UPDATE_LOCATION } from 'redux-simple-router'
 
-import { WS_CONNECTING, WS_CONNECTED, WS_DISCONNECTED, WS_MESSAGE_RECEIVED, WS_MESSAGE_SENT } from '../const'
+import {
+  MOVE_CURSOR, WS_CONNECTING, WS_CONNECTED, WS_DISCONNECTED, WS_MESSAGE_RECEIVED, WS_MESSAGE_SENT,
+} from '../const'
 
 import Tree from '../lib/Tree'
 
@@ -13,6 +15,8 @@ const initialAuthState = {
 
 const initialChatState = {
   auth: initialAuthState,
+
+  cursorParent: null,
 
   fetching: true,
   oldestDisplayedMsgId: null,
@@ -111,8 +115,27 @@ function messageReceived(state, packet) {
   }
 }
 
+function moveCursor(state, dir) {
+  const { cursorParent, tree } = state
+  switch (dir) {
+    case 'top':
+      return { ...state, cursorParent: null }
+    case 'up':
+      const msgId = tree.precedingParent(cursorParent)
+      if (msgId === null) {
+        return state
+      }
+      return { ...state, cursorParent: msgId }
+    default:
+      return state
+  }
+}
+
 function chat(state = initialChatState, action) {
   switch (action.type) {
+    case MOVE_CURSOR:
+      const newState = moveCursor(state, action.dir)
+      return { ...newState, tree: newState.tree.touch(state.cursorParent, newState.cursorParent) }
     case WS_CONNECTING:
       return { ...state, socketState: 'connecting' }
     case WS_CONNECTED:

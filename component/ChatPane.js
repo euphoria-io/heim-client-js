@@ -5,17 +5,13 @@ import { SEND_PACKET } from '../const'
 
 import Tree from '../lib/Tree'
 
-import ChatEntry from './ChatEntry'
 import ChatThread from './ChatThread'
 import Pane from './Pane'
 import ScrollFollower from './ScrollFollower'
 
 class ChatPane extends Pane {
   render() {
-    const { dispatch, nick, now, oldestMsgId, roomName, tree } = this.props
-    const chatEntry = (
-      <ChatEntry id="chat-entry" dispatch={dispatch} nick={nick} pane={this} roomname={roomName} />
-    )
+    const { cursorParent, dispatch, nick, now, oldestMsgId, roomName, tree } = this.props
     const fetchMore = () => {
       if (oldestMsgId) {
         dispatch({
@@ -33,7 +29,15 @@ class ChatPane extends Pane {
     }
     return (
       <ScrollFollower className="children top" cursor="chat-entry" fetchMore={fetchMore}>
-        <ChatThread entry={chatEntry} now={now} tree={tree} />
+        <ChatThread
+          cursorParent={cursorParent}
+          dispatch={dispatch}
+          nick={nick}
+          now={now}
+          pane={this}
+          roomName={roomName}
+          tree={tree}
+        />
       </ScrollFollower>
     )
   }
@@ -42,6 +46,7 @@ class ChatPane extends Pane {
 ChatPane.mixins = [PureRenderMixin]
 
 ChatPane.propTypes = {
+  cursorParent: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
   nick: PropTypes.string,
   now: PropTypes.instanceOf(Date),

@@ -3,7 +3,9 @@ import React, { Component, PropTypes } from 'react'
 import { nickBgColor } from '../lib/nick'
 import Tree from '../lib/Tree'
 
+import ChatEntry from './ChatEntry'
 import Message from './Message'
+import Pane from './Pane'
 
 class ChatThread extends Component {
   shouldComponentUpdate(nextProps) {
@@ -40,41 +42,70 @@ class ChatThread extends Component {
         borderLeftColor: nickBgColor(parentNick).background,
       }
     }
-    const { entry, now, tree } = this.props
+    const { cursorParent, dispatch, nick, now, pane, roomName, tree } = this.props
     return (
       <div ref="children" className="children" style={style}>
         {children.valueSeq().map(msg =>
-          <ChatThread entry={entry} key={msg.id} msg={msg} now={now} tree={tree} />
+          <ChatThread
+            cursorParent={cursorParent}
+            dispatch={dispatch}
+            key={msg.id}
+            nick={nick}
+            msg={msg}
+            now={now}
+            pane={pane}
+            roomName={roomName}
+            tree={tree}
+          />
         )}
       </div>
     )
   }
 
+  renderChatEntry() {
+    const { cursorParent, dispatch, nick, pane, roomName } = this.props
+    return (
+      <ChatEntry
+        id="chat-entry"
+        dispatch={dispatch}
+        nick={nick}
+        pane={pane}
+        parentId={cursorParent}
+        roomName={roomName}
+      />
+    )
+  }
+
   render() {
-    const { entry, msg, now, tree } = this.props
+    const { cursorParent, msg, now, tree } = this.props
     if (!tree) {
       return null
     }
 
-    const children = msg ? tree.childrenOf(msg.id) : tree.childrenOf(null)
+    const msgId = msg ? msg.id : null
+    const children = tree.childrenOf(msgId)
     const msgNode = msg ? <Message msg={msg} hasChildren={!!children.size} now={now} /> : null
     const childrenNode = !!children.size ? this.renderChildren(children, msg && msg.sender.name) : null
-    const attachEntry = (!msg && !entry.parentId) || msg.id === entry.parentId
+    const attachEntry = cursorParent === msgId
 
     return (
       <div className="thread">
         {msgNode}
         {childrenNode}
-        {attachEntry ? entry : null}
+        {attachEntry ? this.renderChatEntry() : null}
       </div>
     )
   }
 }
 
 ChatThread.propTypes = {
-  entry: PropTypes.element.isRequired,
+  cursorParent: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
   msg: PropTypes.object,
+  nick: PropTypes.string,
   now: PropTypes.instanceOf(Date).isRequired,
+  pane: PropTypes.instanceOf(Pane).isRequired,
+  roomName: PropTypes.string.isRequired,
   tree: PropTypes.instanceOf(Tree).isRequired,
 }
 

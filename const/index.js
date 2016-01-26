@@ -1,7 +1,6 @@
 const Action = a => '@@heim-client/' + a
 
-export const KEY_PRESSED = Action('KEY_PRESSED')
-export const MOVE_CHAT_ENTRY = Action('MOVE_CHAT_ENTRY')
+export const MOVE_CURSOR = Action('MOVE_CURSOR')
 export const SEND_PACKET = Action('SEND_PACKET')
 export const TICK = Action('TICK')
 

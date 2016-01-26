@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
-import { MOVE_CHAT_ENTRY } from '../const'
+import { MOVE_CURSOR } from '../const'
 
 import KeyboardHandler from './KeyboardHandler'
 import Nick from './Nick'
@@ -19,7 +19,7 @@ class ChatEntry extends Component {
     const move = dir => () => {
       console.log('move', dir)
       return dispatch({
-        type: MOVE_CHAT_ENTRY,
+        type: MOVE_CURSOR,
         roomName,
         dir,
       })

@@ -5,7 +5,6 @@ import Pane from './Pane'
 
 class KeyboardHandler extends Component {
   componentDidMount() {
-    console.log('keyboard handler did mount')
     const { keys, listenTo } = this.props
     _.forEach(keys, (value, key) => listenTo.bindKey(key, value))
   }
