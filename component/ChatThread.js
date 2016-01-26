@@ -47,7 +47,7 @@ class ChatThread extends Component {
     return (
       <div ref="children" className="children" style={style}>
         {children.valueSeq().map(msg =>
-          <ChatThread chat={chat}
+          <ChatThread
             chat={chat}
             dispatch={dispatch}
             key={msg.id}
