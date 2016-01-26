@@ -115,18 +115,39 @@ function messageReceived(state, packet) {
   }
 }
 
-function moveCursor(state, dir) {
+function moveCursor(state, dir, parentId) {
   const { cursorParent, tree } = state
   switch (dir) {
     case 'top':
       return { ...state, cursorParent: null }
     case 'up':
-      const msgId = tree.precedingParent(cursorParent)
-      if (msgId === null) {
-        return state
+      {
+        const msgId = tree.precedingParent(cursorParent)
+        if (msgId === null) {
+          return state
+        }
+        return { ...state, cursorParent: msgId }
       }
-      return { ...state, cursorParent: msgId }
+    case 'down':
+      {
+        const msgId = tree.nextParent(cursorParent)
+        if (msgId === null) {
+          return state
+        }
+        return { ...state, cursorParent: msgId }
+      }
+    case 'left':
+      {
+        if (!cursorParent) {
+          return state
+        }
+        const msg = tree.get(cursorParent)
+        return { ...state, cursorParent: msg.parent || null }
+      }
     default:
+      if (parentId !== undefined) {
+        return { ...state, cursorParent: parentId }
+      }
       return state
   }
 }
@@ -134,7 +155,8 @@ function moveCursor(state, dir) {
 function chat(state = initialChatState, action) {
   switch (action.type) {
     case MOVE_CURSOR:
-      const newState = moveCursor(state, action.dir)
+      const newState = moveCursor(state, action.dir, action.msgId)
+      console.log('cursor parent:', newState.cursorParent)
       return { ...newState, tree: newState.tree.touch(state.cursorParent, newState.cursorParent) }
     case WS_CONNECTING:
       return { ...state, socketState: 'connecting' }

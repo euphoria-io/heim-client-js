@@ -32,6 +32,8 @@ class ChatEntry extends Component {
       <KeyboardHandler id={id} className="chat-entry" listenTo={pane} keys={{
         escape: move('top'),
         up: move('up'),
+        down: move('down'),
+        left: move('left'),
       }}
       >
         <div className="sender">

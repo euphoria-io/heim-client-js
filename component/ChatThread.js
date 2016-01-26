@@ -76,17 +76,33 @@ class ChatThread extends Component {
     )
   }
 
+  renderMessage(hasChildren) {
+    const { dispatch, msg, now, roomName } = this.props
+    if (!msg) {
+      return null
+    }
+    return (
+      <Message
+        dispatch={dispatch}
+        msg={msg}
+        hasChildren={hasChildren}
+        now={now}
+        roomName={roomName}
+      />
+    )
+  }
+
   render() {
-    const { cursorParent, msg, now, tree } = this.props
+    const { cursorParent, msg, tree } = this.props
     if (!tree) {
       return null
     }
 
     const msgId = msg ? msg.id : null
     const children = tree.childrenOf(msgId)
-    const msgNode = msg ? <Message msg={msg} hasChildren={!!children.size} now={now} /> : null
+    const msgNode = this.renderMessage(!!children.size)
     const childrenNode = !!children.size ? this.renderChildren(children, msg && msg.sender.name) : null
-    const attachEntry = cursorParent === msgId
+    const attachEntry = cursorParent === msgId || (!cursorParent && !msgId)
 
     return (
       <div className="thread">
