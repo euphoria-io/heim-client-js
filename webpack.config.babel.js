@@ -41,7 +41,7 @@ const config = {
         loader: 'css!autoprefixer!less',
       },
       {
-        test: /\.js$/,
+        test: path => /\.js$/.test(path) && !/\.test\.js$/.test(path),
         exclude: /node_modules/,
         loaders: ['react-hot', 'babel'],
       },
