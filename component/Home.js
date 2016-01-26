@@ -1,14 +1,22 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { routeActions } from 'redux-simple-router'
 
-export default class Home extends Component {
+class Home extends Component {
+  componentDidMount() {
+    const { push } = this.props
+    push('/room/welcome/')
+  }
+
   render() {
     return (
-      <ul className="home">
-        <li><Link to="/room/srs/">&amp;srs</Link></li>
-        <li><Link to="/room/test/">&amp;test</Link></li>
-        <li><Link to="/room/xkcd/">&amp;xkcd</Link></li>
-      </ul>
+      <div className="home">Loading...</div>
     )
   }
 }
+
+Home.propTypes = {
+  push: PropTypes.func.isRequired,
+}
+
+export default connect(null, routeActions)(Home)
