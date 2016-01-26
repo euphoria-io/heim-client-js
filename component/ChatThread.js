@@ -63,17 +63,17 @@ class ChatThread extends Component {
 
   renderChatEntry() {
     const { chat, dispatch, pane, roomName } = this.props
-    const { cursorParent, editorText, nick } = chat
+    const { cursorParent, editor, nick } = chat
 
     return (
       <ChatEntry
         id="chat-entry"
         dispatch={dispatch}
+        editor={editor}
         nick={nick}
         pane={pane}
         parentId={cursorParent}
         roomName={roomName}
-        value={editorText}
       />
     )
   }

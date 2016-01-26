@@ -18,7 +18,13 @@ const initialChatState = {
   auth: initialAuthState,
 
   cursorParent: null,
-  editorText: '',
+
+  editor: {
+    selectionDirection: 'forward',
+    selectionEnd: 0,
+    selectionStart: 0,
+    value: '',
+  },
 
   fetching: true,
   oldestDisplayedMsgId: null,
@@ -157,7 +163,7 @@ function moveCursor(state, dir, parentId) {
 function chat(state = initialChatState, action) {
   switch (action.type) {
     case EDIT_TEXT:
-      return { ...state, editorText: action.text }
+      return { ...state, editor: action.editor }
     case MOVE_CURSOR:
       const newState = moveCursor(state, action.dir, action.msgId)
       console.log('cursor parent:', newState.cursorParent)

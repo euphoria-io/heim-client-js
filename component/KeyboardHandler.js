@@ -6,12 +6,12 @@ import Pane from './Pane'
 class KeyboardHandler extends Component {
   componentDidMount() {
     const { keys, listenTo } = this.props
-    _.forEach(keys, (value, key) => listenTo.bindKey(key, value))
+    _.forEach(keys, (value, key) => value && listenTo.bindKey(key, value))
   }
 
   componentWillUnmount() {
     const { keys, listenTo } = this.props
-    _.forEach(keys, (value, key) => listenTo.unbindKey(key, value))
+    _.forEach(keys, (value, key) => value && listenTo.unbindKey(key, value))
   }
 
   render() {
