@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
-import { MOVE_CURSOR } from '../const'
+import { MOVE_CURSOR, SEND_PACKET } from '../const'
 
 import Editor from './Editor'
 import KeyboardHandler from './KeyboardHandler'
@@ -9,7 +9,26 @@ import Nick from './Nick'
 
 class ChatEntry extends Component {
   render() {
-    const { dispatch, editor, id, nick, pane, roomName } = this.props
+    const { dispatch, editor, id, nick, pane, parentId, roomName } = this.props
+    const send = ev => {
+      const value = ev.target.value
+      ev.preventDefault()
+      if (!value.length) {
+        return
+      }
+      dispatch({
+        type: SEND_PACKET,
+        roomName,
+        packet: {
+          type: 'send',
+          data: {
+            parent: parentId,
+            content: value,
+          },
+        },
+      })
+    }
+
     const move = dir => ev => {
       if (dir === 'left' && editor.value !== '') {
         return
@@ -36,6 +55,7 @@ class ChatEntry extends Component {
           down: move('down'),
           left: move('left'),
           right: move('top'),
+          enter: send,
         }}
         >
           <div className="sender">

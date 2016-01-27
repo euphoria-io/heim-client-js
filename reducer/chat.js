@@ -17,9 +17,8 @@ const initialAuthState = {
 const initialChatState = {
   auth: initialAuthState,
 
-  cursorParent: null,
-
   editor: {
+    parentId: null,
     selectionDirection: 'forward',
     selectionEnd: 0,
     selectionStart: 0,
@@ -69,6 +68,8 @@ function messageSent(state, packet) {
       return { ...state, auth }
     case 'log':
       return { ...state, fetching: true }
+    case 'send':
+      return { ...state, editor: initialChatState.editor }
     default:
       return state
   }
@@ -124,34 +125,34 @@ function messageReceived(state, packet) {
 }
 
 function moveCursor(state, dir, parentId) {
-  const { cursorParent, tree } = state
+  const { editor, tree } = state
   switch (dir) {
     case 'top':
-      return { ...state, cursorParent: null }
+      return { ...state, editor: { ...editor, parentId: null } }
     case 'up':
       {
-        const msgId = tree.precedingParent(cursorParent)
+        const msgId = tree.precedingParent(editor.parentId)
         if (msgId === null) {
           return state
         }
-        return { ...state, cursorParent: msgId }
+        return { ...state, editor: { ...editor, parentId: msgId } }
       }
     case 'down':
       {
-        const msgId = tree.nextParent(cursorParent)
-        return { ...state, cursorParent: msgId }
+        const msgId = tree.nextParent(editor.parentId)
+        return { ...state, editor: { ...editor, parentId: msgId } }
       }
     case 'left':
       {
-        if (!cursorParent) {
+        if (!editor.parentId) {
           return state
         }
-        const msg = tree.get(cursorParent)
-        return { ...state, cursorParent: msg.parent || null }
+        const msg = tree.get(editor.parentId)
+        return { ...state, editor: { ...editor, parentId: msg.parent || null } }
       }
     default:
       if (parentId !== undefined) {
-        return { ...state, cursorParent: parentId }
+        return { ...state, editor: { ...editor, parentId } }
       }
       return state
   }
@@ -163,7 +164,12 @@ function chat(state = initialChatState, action) {
       return { ...state, editor: action.editor }
     case MOVE_CURSOR:
       const newState = moveCursor(state, action.dir, action.msgId)
-      return { ...newState, tree: newState.tree.touch(state.cursorParent, newState.cursorParent) }
+      const paths = id => state.tree.paths.get(id, '').split('/')
+      let touched = paths(state.editor.parentId)
+      if (state.editor.parentId !== newState.editor.parentId) {
+        touched = touched.concat(paths(newState.editor.parentId))
+      }
+      return { ...newState, tree: newState.tree.touch(...touched) }
     case WS_CONNECTING:
       return { ...state, socketState: 'connecting' }
     case WS_CONNECTED:

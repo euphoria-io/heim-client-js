@@ -80,7 +80,7 @@ class ChatThread extends Component {
 
   renderChatEntry() {
     const { chat, dispatch, pane, roomName } = this.props
-    const { cursorParent, editor, nick } = chat
+    const { editor, nick } = chat
 
     return (
       <ChatEntry
@@ -89,7 +89,7 @@ class ChatThread extends Component {
         editor={editor}
         nick={nick}
         pane={pane}
-        parentId={cursorParent}
+        parentId={editor.parentId}
         roomName={roomName}
       />
     )
@@ -114,7 +114,7 @@ class ChatThread extends Component {
 
   render() {
     const { chat, msg, terminal } = this.props
-    const { cursorParent, tree } = chat
+    const { editor, tree } = chat
     if (!tree) {
       return null
     }
@@ -122,7 +122,7 @@ class ChatThread extends Component {
     const msgId = msg ? msg.id : null
     const children = tree.childrenOf(msgId)
     const msgNode = this.renderMessage(!!children.size)
-    const attachEntry = cursorParent === msgId || (!cursorParent && !msgId)
+    const attachEntry = editor.parentId === msgId || (!editor.parentId && !msgId)
     const className = (terminal && (!children || !children.size) && !attachEntry) ? 'thread terminal' : 'thread'
 
     return (
