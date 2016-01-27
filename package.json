@@ -4,16 +4,15 @@
   "description": "Euphoria (heim) client",
   "main": "index.js",
   "scripts": {
-    "cover": "babel-istanbul cover ./node_modules/.bin/tape $(find . -path ./node_modules -prune -o -path build -prune -o -name '*.test.js' -print)",
+    "cover": "babel-istanbul cover ./node_modules/.bin/tape '!(build|node_modules)/**/*.test.js'",
     "dev": "webpack-dev-server --hot --watch-poll --host 0.0.0.0",
-    "test": "tape -r babel-register $(find . -path ./node_modules -prune -o -path build -prune -o -name '*.test.js' -print) | faucet"
+    "test": "tape -r babel-register '!(build|node_modules)/**/*.test.js' | faucet"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
     "babel": "^6.3.26",
-    "babel-cli": "^6.4.0",
     "babel-core": "^6.4.0",
     "babel-istanbul": "^0.6.0",
     "babel-loader": "^6.2.1",
