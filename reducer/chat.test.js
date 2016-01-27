@@ -1,40 +1,12 @@
 import Immutable from 'immutable'
-import { UPDATE_LOCATION } from 'redux-simple-router'
 import test from 'tape'
 
-import chatSwitch from './chat'
+import chatSwitch from './chatSwitch'
 
 import {
   EDIT_TEXT, MOVE_CURSOR,
   WS_CONNECTING, WS_CONNECTED, WS_DISCONNECTED, WS_MESSAGE_RECEIVED, WS_MESSAGE_SENT,
 } from '../const'
-
-test('chatSwitch currentRoom', t => {
-  const update = (path, key = 'location') => {
-    const action = { type: UPDATE_LOCATION }
-    action[key] = { pathname: path }
-    return action
-  }
-
-  let state = chatSwitch(undefined, { type: 'ignore', roomName: 'ignore' })
-  t.equal(state.currentRoom, null)
-  t.deepEqual(state.chats.keySeq().toArray(), ['ignore'])
-
-  t.equal(chatSwitch(state, update('/room/test/', 'ignore')), state)
-
-  state = chatSwitch(state, update('/room/test/'))
-  t.equal(state.currentRoom, 'test')
-
-  state = chatSwitch(state, update('/room/test2/', 'payload'))
-  t.equal(state.currentRoom, 'test2')
-
-  const before = state.chats.get('test')
-  state = chatSwitch(state, update('/room/test/'))
-  t.equal(state.currentRoom, 'test')
-  t.equal(state.chats.get('test'), before)
-
-  t.end()
-})
 
 test('chat', t => {
   let state

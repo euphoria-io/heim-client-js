@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import chatSwitch from './chat'
+import chatSwitch from './chatSwitch'
 import now from './now'
 import rooms from './rooms'
 import socketLog from './socketLog'
