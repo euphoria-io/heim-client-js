@@ -71,10 +71,6 @@ z-index: 5;
     padding-top: @nick-vertical-padding;
   }
 
-  time {
-    display: none;
-  }
-
   &.emote {
     .nick {
       border-top-right-radius: 0;
@@ -96,8 +92,6 @@ z-index: 5;
 
 .children {
   padding-left: @thread-indent;
-  padding-top: @message-spacing;
-  padding-bottom: @message-spacing;
 
   &.top {
     flex: 1;
@@ -106,49 +100,50 @@ z-index: 5;
     padding: 0.5rem 0 0 0;
     z-index: 1;
 
-    > .thread > {
+    > .thread {
       margin-bottom: 0;
 
-      .children > .thread {
-        padding-right: 0.5rem;
+      > .children {
+        padding-bottom: 0;
+
+        > .chat-entry {
+          .chat-entry-row {
+            margin-left: -@thread-indent;
+            padding-left: @thread-indent;
+            padding-bottom: 0;
+          }
+        }
+
+        > .thread {
+          padding-right: 0.5rem;
+        }
       }
     }
   }
 }
 
 .thread {
-  margin-bottom: @message-spacing;
-}
-
-// Ends of threads are complicated places. This is the only place we want to show timestamps,
-// and there are some positioning hacks needed for smooth border styling.
-.top .thread .thread:last-child {
-  margin-bottom: 0;
-
-  > .message {
-    margin-bottom: -@message-spacing;
-    time {
-      display: inline;
-    }
-  }
-
-  > .children {
-    margin-top: @message-spacing;
-  }
+  padding-top: @message-spacing;
 }
 
 .chat-entry {
   @hpad: 0.5rem;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: top;
-  border-bottom: 3px solid fade(green, 50%);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  margin-top: @message-spacing;
-  padding: @nick-vertical-padding 0 @nick-vertical-padding @thread-indent;
   line-height: 1.6em;
+  padding-top: @nick-vertical-padding;
+
+  .chat-entry-row {
+    border-bottom: 3px solid fade(green, 50%);
+    display: flex;
+    flex-flow: row wrap;
+    align-items: top;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-left: -@nick-horizontal-padding;
+    padding-left: @nick-horizontal-padding;
+    padding-bottom: @nick-vertical-padding;
+  }
 
   .nick {
+    margin-top: @message-spacing;
     flex: 0;
   }
 
@@ -160,6 +155,7 @@ z-index: 5;
     font-size: @base-font-size;
     height: 1.6em;
     padding: 0 0 0 0;
+    margin-top: @message-spacing;
 
     &:focus {
       border: none;

@@ -30,10 +30,11 @@ class ChatThread extends Component {
     return false
   }
 
-  renderChildren(children, parentNick) {
-    if (!children || !children.size) {
+  renderChildren(children, parentNick, attachEntry) {
+    if ((!children || !children.size) && !attachEntry) {
       return ''
     }
+
     let style = {}
     if (parentNick) {
       style = {
@@ -43,20 +44,36 @@ class ChatThread extends Component {
         borderLeftColor: nickBgColor(parentNick).background,
       }
     }
+
+    if (!children || !children.size) {
+      return (
+        <div ref="children" className="children" style={style}>
+          {this.renderChatEntry()}
+        </div>
+      )
+    }
+
     const { chat, dispatch, now, pane, roomName } = this.props
+    const renderChild = (msg, terminal) => (
+      <ChatThread
+        chat={chat}
+        dispatch={dispatch}
+        key={msg.id}
+        msg={msg}
+        now={now}
+        pane={pane}
+        roomName={roomName}
+        terminal={terminal}
+      />
+    )
+
+    const msgs = children.valueSeq()
+
     return (
       <div ref="children" className="children" style={style}>
-        {children.valueSeq().map(msg =>
-          <ChatThread
-            chat={chat}
-            dispatch={dispatch}
-            key={msg.id}
-            msg={msg}
-            now={now}
-            pane={pane}
-            roomName={roomName}
-          />
-        )}
+        {msgs.butLast().map(msg => renderChild(msg))}
+        {renderChild(msgs.last(), true)}
+        {attachEntry ? this.renderChatEntry() : null}
       </div>
     )
   }
@@ -79,7 +96,7 @@ class ChatThread extends Component {
   }
 
   renderMessage(hasChildren) {
-    const { dispatch, msg, now, roomName } = this.props
+    const { dispatch, msg, now, roomName, terminal } = this.props
     if (!msg) {
       return null
     }
@@ -90,12 +107,13 @@ class ChatThread extends Component {
         hasChildren={hasChildren}
         now={now}
         roomName={roomName}
+        terminal={terminal}
       />
     )
   }
 
   render() {
-    const { chat, msg } = this.props
+    const { chat, msg, terminal } = this.props
     const { cursorParent, tree } = chat
     if (!tree) {
       return null
@@ -104,14 +122,13 @@ class ChatThread extends Component {
     const msgId = msg ? msg.id : null
     const children = tree.childrenOf(msgId)
     const msgNode = this.renderMessage(!!children.size)
-    const childrenNode = !!children.size ? this.renderChildren(children, msg && msg.sender.name) : null
     const attachEntry = cursorParent === msgId || (!cursorParent && !msgId)
+    const className = (terminal && (!children || !children.size) && !attachEntry) ? 'thread terminal' : 'thread'
 
     return (
-      <div className="thread">
+      <div className={className}>
         {msgNode}
-        {childrenNode}
-        {attachEntry ? this.renderChatEntry() : null}
+        {this.renderChildren(children, msg && msg.sender.name, attachEntry)}
       </div>
     )
   }
@@ -124,6 +141,7 @@ ChatThread.propTypes = {
   now: PropTypes.instanceOf(Date).isRequired,
   pane: PropTypes.instanceOf(Pane).isRequired,
   roomName: PropTypes.string.isRequired,
+  terminal: PropTypes.bool,
 }
 
 export default ChatThread

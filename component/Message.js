@@ -11,7 +11,8 @@ import UserText from './UserText'
 
 class Message extends Component {
   render() {
-    const { dispatch, hasChildren, msg, now, roomName } = this.props
+    const { dispatch, hasChildren, msg, now, roomName, terminal } = this.props
+
     let messageStyle = {}
     if (hasChildren) {
       messageStyle = {
@@ -46,7 +47,7 @@ class Message extends Component {
             className="content"
             style={contentStyle}
             content={content}
-            timestamp={moment.unix(msg.time)}
+            timestamp={terminal && moment.unix(msg.time)}
             now={now}
           />
         </div>
@@ -63,6 +64,7 @@ Message.propTypes = {
   msg: PropTypes.object,
   now: PropTypes.instanceOf(Date),
   roomName: PropTypes.string.isRequired,
+  terminal: PropTypes.bool,
 }
 
 export default Message

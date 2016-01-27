@@ -11,7 +11,7 @@ class ChatEntry extends Component {
   render() {
     const { dispatch, editor, id, nick, pane, roomName } = this.props
     const move = dir => ev => {
-      if ((dir === 'left' || dir === 'right') && editor.value !== '') {
+      if (dir === 'left' && editor.value !== '') {
         return
       }
       if ((dir === 'up' || dir === 'down') && /\n/.test(editor.value)) {
@@ -29,18 +29,21 @@ class ChatEntry extends Component {
     }
 
     return (
-      <KeyboardHandler id={id} className="chat-entry" listenTo={pane} keys={{
-        escape: move('top'),
-        up: move('up'),
-        down: move('down'),
-        left: move('left'),
-      }}
-      >
-        <div className="sender">
-          <Nick name={nick || 'your name here'} />
-        </div>
-        <Editor dispatch={dispatch} editorId="main" editorState={editor} roomName={roomName} />
-      </KeyboardHandler>
+      <div className="chat-entry">
+        <KeyboardHandler id={id} className="chat-entry-row" listenTo={pane} keys={{
+          escape: move('top'),
+          up: move('up'),
+          down: move('down'),
+          left: move('left'),
+          right: move('top'),
+        }}
+        >
+          <div className="sender">
+            <Nick name={nick || 'your name here'} />
+          </div>
+          <Editor dispatch={dispatch} editorId="main" editorState={editor} roomName={roomName} />
+        </KeyboardHandler>
+      </div>
     )
   }
 }
