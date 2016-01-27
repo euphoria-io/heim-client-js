@@ -256,4 +256,21 @@ test('chat', t => {
 
     t.end()
   })
+
+  t.test('socket state', t => {
+    const socketState = () => state.chats.get(roomName).socketState
+    state = chatSwitch(undefined, { type: 'ignore', roomName })
+    t.equal(socketState(), 'disconnected')
+
+    state = chatSwitch(state, { type: WS_CONNECTING, roomName })
+    t.equal(socketState(), 'connecting')
+
+    state = chatSwitch(state, { type: WS_DISCONNECTED, roomName })
+    t.equal(socketState(), 'disconnected')
+
+    state = chatSwitch(state, { type: WS_CONNECTED, roomName })
+    t.equal(socketState(), 'connected')
+
+    t.end()
+  })
 })
