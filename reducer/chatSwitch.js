@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
 import { UPDATE_LOCATION } from 'redux-simple-router'
 
-import chat, { initialChatState } from './chat'
+import chat, { Chat } from './chat'
 
 function updateLocation(state, loc) {
   if (!loc) {
@@ -14,7 +14,9 @@ function updateLocation(state, loc) {
   const currentRoom = match[1]
   let chats = state.chats
   if (!state.chats.has(currentRoom)) {
-    chats = chats.set(currentRoom, { ...initialChatState, roomName: currentRoom })
+    const chatState = new Chat()
+    chatState.roomName = currentRoom
+    chats = chats.set(currentRoom, chatState)
   }
   return { chats, currentRoom }
 }
@@ -30,8 +32,11 @@ export default function chatSwitch(state = initialState, action) {
       const loc = action.location || action.payload
       return updateLocation(state, loc)
     default:
-      const chatState = state.chats.get(
-        action.roomName, { ...initialChatState, roomName: action.roomName })
+      let chatState = state.chats.get(action.roomName)
+      if (!chatState) {
+        chatState = new Chat()
+        chatState.roomName = action.roomName
+      }
       const chats = state.chats.set(action.roomName, chat(chatState, action))
       return { ...state, chats }
   }

@@ -30,9 +30,9 @@ test('chat', t => {
   state = chatSwitch(undefined, { type: 'ignore', roomName })
 
   t.deepEqual(auth(), {
-    failureReason: null,
-    pending: true,
-    required: false,
+    _failureReason: null,
+    _pending: true,
+    _required: false,
   })
 
   t.deepEqual(editor(), {
@@ -71,8 +71,9 @@ test('chat', t => {
     const moveCursor = (dir, msgId) => ({ type: MOVE_CURSOR, roomName, dir, msgId })
 
     const before = editor()
+    console.log('moving on:', state.chats.get(roomName))
     state = chatSwitch(state, moveCursor('nowhere'))
-    t.equal(editor(), before)
+    t.deepEqual(editor(), before)
 
     state = chatSwitch(state, moveCursor('up'))
     t.equal(editor().parentId, 'C')
@@ -183,31 +184,31 @@ test('chat', t => {
 
   t.test('auth state', t => {
     state = chatSwitch(undefined, { type: 'ignore', roomName })
-    t.equal(auth().pending, true)
+    t.equal(auth()._pending, true)
 
     const snapshot = { listing: [], log: [] }
     state = chatSwitch(state, recvPacket('snapshot-event', snapshot))
-    t.equal(auth().pending, false)
-    t.equal(auth().required, false)
+    t.equal(auth()._pending, false)
+    t.equal(auth()._required, false)
 
     state = chatSwitch(state, recvPacket('bounce-event', { reason: 'test' }))
-    t.equal(auth().required, false)
+    t.equal(auth()._required, false)
     state = chatSwitch(state, recvPacket('bounce-event', { reason: 'authentication required' }))
-    t.equal(auth().required, true)
+    t.equal(auth()._required, true)
 
     state = chatSwitch(state, sendPacket('auth'))
-    t.equal(auth().pending, true)
-    t.equal(auth().required, true)
+    t.equal(auth()._pending, true)
+    t.equal(auth()._required, true)
 
     state = chatSwitch(state, recvPacket('auth-reply', { success: false, reason: 'reason' }))
-    t.equal(auth().pending, false)
-    t.equal(auth().required, true)
-    t.equal(auth().failureReason, 'reason')
+    t.equal(auth()._pending, false)
+    t.equal(auth()._required, true)
+    t.equal(auth()._failureReason, 'reason')
     state = chatSwitch(state, recvPacket('auth-reply', { success: false, reason: 'reason2' }))
-    t.equal(auth().failureReason, 'reason2')
+    t.equal(auth()._failureReason, 'reason2')
 
     state = chatSwitch(state, recvPacket('auth-reply', { success: true }))
-    t.equal(auth().required, false)
+    t.equal(auth()._required, false)
 
     t.end()
   })
