@@ -77,7 +77,7 @@ function messageSent(state, packet) {
 
 function messageReceived(state, packet) {
   let newState = state
-  let auth = newState.auth
+  let auth = { ...newState.auth }
   switch (packet.type) {
     case 'auth-reply':
       auth = { ...auth, pending: false }
@@ -89,8 +89,8 @@ function messageReceived(state, packet) {
       return { ...newState, auth }
     case 'bounce-event':
       if (packet.data.reason === 'authentication required') {
-        auth.required = false
-        return { ...newState, auth: true }
+        auth.required = true
+        return { ...newState, auth }
       }
       // TODO: handle getting banned
       return newState
