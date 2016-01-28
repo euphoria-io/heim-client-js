@@ -16,6 +16,8 @@ else
   s3cmd put node_modules-${NODE_MODULES_REV}.tar.gz s3://alpha.euphoria.io
 fi
 
+npm run-script cover
+
 echo 'Building static assets'
 NODE_ENV=production node_modules/.bin/webpack
 
