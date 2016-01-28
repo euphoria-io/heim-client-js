@@ -95,6 +95,7 @@ class Editor {
 export const initialChatState = {
   auth: new Auth(),
   editor: new Editor(),
+  localStorage: Immutable.Map(),
 
   fetching: true,
   oldestDisplayedMsgId: null,
@@ -153,8 +154,13 @@ export class Chat {
     if (forceDisplay && (!oldestDisplayedMsgId || msg.id < oldestDisplayedMsgId)) {
       oldestDisplayedMsgId = msg.id
     }
+    let localStorage = this.localStorage
+    const lastActive = localStorage.get('lastActive', 0)
+    if (msg.time > lastActive) {
+      localStorage = localStorage.set('lastActive', msg.time)
+    }
     const tree = this.tree.addChild(msg)
-    return new Chat({ ...this, oldestDisplayedMsgId, oldestMsgId, tree })
+    return new Chat({ ...this, localStorage, oldestDisplayedMsgId, oldestMsgId, tree })
   }
 
   addUser(sessionView) {
@@ -235,23 +241,27 @@ export class Chat {
   }
 }
 
-export default function chat(state = new Chat(), action) {
+export default function chatReducer(state = new Chat(), action) {
+  let chat = state
+  if (!(chat instanceof Chat)) {
+    chat = new Chat(state)
+  }
   switch (action.type) {
     case EDIT_TEXT:
-      return state.setEditor(action.editor)
+      return chat.setEditor(action.editor)
     case MOVE_CURSOR:
-      return state.moveCursor(action.dir, action.msgId)
+      return chat.moveCursor(action.dir, action.msgId)
     case WS_CONNECTING:
-      return state.setSocketState('connecting')
+      return chat.setSocketState('connecting')
     case WS_CONNECTED:
-      return state.setSocketState('connected')
+      return chat.setSocketState('connected')
     case WS_DISCONNECTED:
-      return state.setSocketState('disconnected')
+      return chat.setSocketState('disconnected')
     case WS_MESSAGE_RECEIVED:
-      return state.messageReceived(action.packet)
+      return chat.messageReceived(action.packet)
     case WS_MESSAGE_SENT:
-      return state.messageSent(action.packet)
+      return chat.messageSent(action.packet)
     default:
-      return state
+      return chat
   }
 }
