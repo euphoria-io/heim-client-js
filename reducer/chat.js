@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import _ from 'lodash'
 
 import {
   EDIT_TEXT, MOVE_CURSOR,
@@ -79,7 +80,7 @@ class Editor {
   }
 
   down(tree) {
-    return new Editor({ ...this, parentId: tree.nextParent(this.parentId)})
+    return new Editor({ ...this, parentId: tree.nextParent(this.parentId) })
   }
 
   left(tree) {
@@ -173,23 +174,15 @@ export class Chat {
     if (!log.length) {
       return new Chat({ ...this, fetching: false, complete: true })
     }
-    let chat = this
-    for (let i = 0; i < log.length; i++) {
-      chat = chat.addMessage(log[i])
-    }
-    return new Chat({ ...chat, fetching: false })
+    const newChat = _.reduce(log, (c, v) => c.addMessage(v), this)
+    return new Chat({ ...newChat, fetching: false })
   }
 
   snapshotEvent({ nick, listing, log }) {
-    let chat = this
-    for (let i = 0; i < listing.length; i++) {
-      chat = chat.addUser(listing[i])
-    }
-    for (let i = 0; i < log.length; i++) {
-      chat = chat.addMessage(log[i], true)
-    }
-    const auth = chat.auth.succeeded()
-    return new Chat({ ...chat, auth, nick, fetching: false })
+    let newChat = _.reduce(listing, (c, v) => c.addUser(v), this)
+    newChat = _.reduce(log, (c, v) => c.addMessage(v, true), newChat)
+    const auth = newChat.auth.succeeded()
+    return new Chat({ ...newChat, auth, nick, fetching: false })
   }
 
   messageReceived(packet) {
