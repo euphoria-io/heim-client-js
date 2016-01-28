@@ -114,7 +114,7 @@ export class Chat {
   }
 
   setEditor(editor) {
-    return new Chat({ ...this, editor })
+    return new Chat({ ...this, editor: new Editor(editor) })
   }
 
   moveCursor(dir, msgId) {
