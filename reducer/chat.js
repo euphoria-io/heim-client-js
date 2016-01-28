@@ -24,7 +24,7 @@ class Auth {
   }
 
   required() {
-    return new Auth({ ...this, _required: true })
+    return new Auth({ ...this, _pending: false, _required: true })
   }
 
   succeeded() {
@@ -111,6 +111,18 @@ export const initialChatState = {
 export class Chat {
   constructor(value = initialChatState) {
     Object.assign(this, value)
+  }
+
+  authRequired() {
+    return this.auth._required
+  }
+
+  authPending() {
+    return this.auth._pending
+  }
+
+  authFailureReason() {
+    return this.auth._failureReason
   }
 
   setEditor(editor) {
