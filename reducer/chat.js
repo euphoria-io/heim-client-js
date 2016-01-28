@@ -226,10 +226,14 @@ export class Chat {
     }
   }
 
-  messageSent({ type }) {
+  messageSent({ type, data }) {
     switch (type) {
       case 'auth':
-        return new Chat({ ...this, auth: this.auth.requested() })
+        let localStorage = this.localStorage
+        if (data.type === 'passcode') {
+          localStorage = localStorage.set('password', data.passcode)
+        }
+        return new Chat({ ...this, auth: this.auth.requested(), localStorage })
       case 'log':
         return new Chat({ ...this, fetching: true })
       case 'send':

@@ -83,8 +83,20 @@ class Socket {
   _onMessage(ev) {
     this._dispatch(WS_MESSAGE_RECEIVED, { packet: JSON.parse(ev.data) })
     const packet = JSON.parse(ev.data)
-    if (packet.type === 'ping-event') {
-      this.send(null, 'ping-reply', packet.data)
+    switch (packet.type) {
+      case 'ping-event':
+        this.send(null, 'ping-reply', packet.data)
+        break
+      case 'bounce-event':
+        if (packet.data.reason === 'authentication required') {
+          const password = this.store.getState().chatSwitch.chats.get(this.roomName).localStorage.get('password')
+          if (password) {
+            this.send(null, 'auth', { type: 'passcode', passcode: password })
+          }
+        }
+        break
+      default:
+        break
     }
   }
 }

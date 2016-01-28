@@ -196,9 +196,10 @@ test('chat', t => {
     state = chatSwitch(state, recvPacket('bounce-event', { reason: 'authentication required' }))
     t.equal(auth()._required, true)
 
-    state = chatSwitch(state, sendPacket('auth'))
+    state = chatSwitch(state, sendPacket('auth', { type: 'passcode', passcode: 'hunter2' }))
     t.equal(auth()._pending, true)
     t.equal(auth()._required, true)
+    t.equal(state.chats.get(roomName).localStorage.get('password'), 'hunter2')
 
     state = chatSwitch(state, recvPacket('auth-reply', { success: false, reason: 'reason' }))
     t.equal(auth()._pending, false)
@@ -209,6 +210,13 @@ test('chat', t => {
 
     state = chatSwitch(state, recvPacket('auth-reply', { success: true }))
     t.equal(auth()._required, false)
+
+    state = chatSwitch(state, recvPacket('bounce-event', { reason: 'authentication required' }))
+    t.equal(auth()._required, true)
+    state = chatSwitch(state, sendPacket('auth', { type: 'notpasscode', passcode: 'hunter3' }))
+    t.equal(auth()._pending, true)
+    t.equal(auth()._required, true)
+    t.equal(state.chats.get(roomName).localStorage.get('password'), 'hunter2')
 
     t.end()
   })
