@@ -10,6 +10,7 @@ class ScrollFollower extends Component {
     this.lastScrollTop = 0
     this.tempOffset = null
     this.counter = 0
+    this._frame = null
   }
 
   componentDidMount() {
@@ -29,21 +30,17 @@ class ScrollFollower extends Component {
   }
 
   componentDidUpdate() {
-    if (this.tempOffset !== null && this.counter) {
-      const container = ReactDOM.findDOMNode(this)
-      const offset = this.tempOffset
-      this.tempOffset = null
-      container.scrollTop = container.scrollHeight - offset
-    }
-
-    this.counter++
-    if (this.follow) {
-      const anchor = document.getElementById(this.props.cursor)
-      if (!anchor) {
+    console.timeStamp('componentDidUpdate')
+    if (typeof window !== 'undefined') {
+      if (this._frame) {
         return
       }
-      const container = ReactDOM.findDOMNode(this)
-      setTimeout(() => this.scrollAnchorIntoView(container, anchor), 0)
+      console.timeStamp('requestAnimationFrame')
+      this._frame = window.requestAnimationFrame(() => {
+        this.scroll()
+        this._frame = null
+      })
+      this.scroll()
     }
   }
 
@@ -82,6 +79,27 @@ class ScrollFollower extends Component {
     }
   }
 
+  scroll() {
+    console.timeStamp('fixing scroll')
+    if (this.tempOffset !== null && this.counter) {
+      const container = ReactDOM.findDOMNode(this)
+      const offset = this.tempOffset
+      this.tempOffset = null
+      console.timeStamp('update scrollTop')
+      container.scrollTop = container.scrollHeight - offset
+    }
+
+    this.counter++
+    if (this.follow) {
+      const anchor = document.getElementById(this.props.cursor)
+      if (!anchor) {
+        return
+      }
+      const container = ReactDOM.findDOMNode(this)
+      this.scrollAnchorIntoView(container, anchor)
+    }
+  }
+
   anchorInView(container, anchor) {
     const { clientHeight, scrollTop } = container
     const anchorScrollTopPos = anchor.offsetTop - container.offsetTop
@@ -90,6 +108,7 @@ class ScrollFollower extends Component {
   }
 
   scrollAnchorIntoView(container, anchor) {
+    console.timeStamp('scrollAnchorIntoView')
     const { clientHeight, scrollTop } = container
     const anchorScrollTopPos = anchor.offsetTop - container.offsetTop
     const anchorScrollBottomPos = anchorScrollTopPos + anchor.offsetHeight
