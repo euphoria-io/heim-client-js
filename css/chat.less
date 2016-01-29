@@ -2,13 +2,16 @@
 @message-spacing: 5px;
 
 flex: 1;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 display: flex;
 flex-flow: column nowrap;
 height: 100%;
 z-index: 5;
 
+.dropshadow();
+
 .connection {
+  .dropshadow();
+
   flex: 0 0 @topbar-height;
   display: flex;
   flex-flow: column nowrap;
@@ -20,7 +23,6 @@ z-index: 5;
   background: @bg1;
   border-top: 0.5rem solid @fg0;
   border-bottom: 1px solid #c5cbd0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 10;
 
   .spacer {
@@ -96,7 +98,8 @@ z-index: 5;
   padding-left: @thread-indent;
 
   &.top {
-    flex: 1;
+    flex: 1 1;
+    overflow-x: hidden;
     overflow-y: scroll;
     margin-left: 0;
     padding: 0.5rem 0 0 0;
@@ -138,11 +141,12 @@ z-index: 5;
   padding-top: @message-spacing;
 
   .chat-entry-row {
+    .dropshadow();
+
     border-bottom: 3px solid fade(green, 50%);
     display: flex;
     flex-flow: row wrap;
     align-items: top;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     margin-left: -@nick-horizontal-padding;
     padding-left: @nick-horizontal-padding;
     padding-bottom: @nick-vertical-padding;
@@ -182,15 +186,16 @@ z-index: 5;
 }
 
 .users {
+  flex: 0 0 160px;
+  overflow-x: hidden;
+  overflow-y: auto;
+
   display: flex;
   flex-flow: column nowrap;
   background: @bg2;
   border-left: 1px solid @fg2;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  overflow-x: hidden;
-  overflow-y: auto;
-  width: 160px;
 
   .user-list {
     flex-shrink: 1;
@@ -236,6 +241,8 @@ z-index: 5;
   }
 
   form {
+    .dropshadow();
+
     flex: 0;
 
     display: flex;
@@ -248,7 +255,6 @@ z-index: 5;
 
     padding: 1rem 1rem 1rem 1rem;
     border: 1px solid @fg2;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 
     div, input {
       flex: 0 0 3rem;
