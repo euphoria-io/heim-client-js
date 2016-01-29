@@ -37,7 +37,7 @@ class StorageFilter {
       return this.engine.save({})
     }
     const roomStorages = state.chatSwitch.chats.reduce(
-      (cs, data, key) => cs.set(key, data.localStorage), Immutable.Map())
+      (cs, data, key) => key ? cs.set(key, data.localStorage) : cs, Immutable.Map())
     return this.engine.save({ rooms: roomStorages })
   }
 }
