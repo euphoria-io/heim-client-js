@@ -110,8 +110,11 @@ export const initialChatState = {
 }
 
 export class Chat {
-  constructor(value = initialChatState) {
+  constructor(value = initialChatState, roomName) {
     Object.assign(this, value)
+    if (!!roomName) {
+      this.roomName = roomName
+    }
   }
 
   authRequired() {

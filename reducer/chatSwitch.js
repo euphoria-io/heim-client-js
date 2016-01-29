@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import _ from 'lodash'
 import { UPDATE_LOCATION } from 'redux-simple-router'
 
 import chat, { Chat } from './chat'
@@ -21,8 +22,15 @@ function updateLocation(state, loc) {
   return { chats, currentRoom }
 }
 
+const initialRooms = [
+  'music',
+  'space',
+  'welcome',
+  'xkcd',
+]
+
 const initialState = {
-  chats: Immutable.Map(),
+  chats: _.reduce(initialRooms, (m, r) => m.set(r, new Chat(undefined, r)), Immutable.Map()),
   currentRoom: null,
 }
 
