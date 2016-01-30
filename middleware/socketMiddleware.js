@@ -64,11 +64,11 @@ class Socket {
   }
 
   _url() {
-    let scheme = 'ws'
-    if (this._endpoint.protocol === 'https') {
-      scheme = 'wss'
+    let scheme = 'ws://'
+    if (this._endpoint.protocol === 'https:') {
+      scheme = 'wss://'
     }
-    return scheme + '://' + this._endpoint.host + '/room/' + this.roomName + '/ws?h=1'
+    return scheme + this._endpoint.host + '/room/' + this.roomName + '/ws?h=1'
   }
 
   _onOpen() {
