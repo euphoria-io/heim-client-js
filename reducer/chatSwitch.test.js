@@ -13,7 +13,7 @@ test('chatSwitch currentRoom', t => {
 
   let state = chatSwitch(undefined, { type: 'ignore', roomName: 'ignore' })
   t.equal(state.currentRoom, null)
-  t.deepEqual(state.chats.keySeq().toArray(), ['ignore'])
+  t.deepEqual(state.chats.keySeq().toArray(), ['music', 'space', 'welcome', 'xkcd', 'ignore'])
 
   t.equal(chatSwitch(state, update('/room/test/', 'ignore')), state)
 
