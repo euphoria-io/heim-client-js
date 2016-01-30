@@ -24,7 +24,7 @@ class Message extends Component {
       }
     }
 
-    const emote = msg.content.startsWith('/me ')
+    const emote = msg.content.startsWith('/me ') && msg.content.length < 240
     const className = emote ? 'message emote' : 'message'
     const content = emote ? msg.content.substr(4) : msg.content
     const contentStyle = emote ? nickBgLightColor(msg.sender.name) : null
