@@ -55,6 +55,8 @@ const config = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.DOMAIN': JSON.stringify(process.env.DOMAIN),
+      'process.env.EMBED_ORIGIN': JSON.stringify(process.env.EMBED_ORIGIN || 'http://localhost:8081'),
     }),
     new StaticSiteGeneratorPlugin('main', ['/']),
   ],

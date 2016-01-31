@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { PropTypes } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
@@ -9,7 +10,7 @@ import ScrollFollower from './ScrollFollower'
 
 class ChatPane extends Pane {
   render() {
-    const { chat, dispatch, now, roomName } = this.props
+    const { chat, dispatch, embedData, now, roomName } = this.props
     const fetchMore = () => {
       if (chat.oldestMsgId) {
         dispatch({
@@ -27,7 +28,7 @@ class ChatPane extends Pane {
     }
     return (
       <ScrollFollower className="children top" cursor="chat-entry" fetchMore={fetchMore}>
-        <ChatThread chat={chat} dispatch={dispatch} now={now} pane={this} roomName={roomName} />
+        <ChatThread chat={chat} dispatch={dispatch} embedData={embedData} now={now} pane={this} roomName={roomName} />
       </ScrollFollower>
     )
   }
@@ -38,6 +39,7 @@ ChatPane.mixins = [PureRenderMixin]
 ChatPane.propTypes = {
   chat: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
+  embedData: PropTypes.instanceOf(Immutable.Map()).isRequired,
   now: PropTypes.instanceOf(Date),
   roomName: PropTypes.string.isRequired,
 }

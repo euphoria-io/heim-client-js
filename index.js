@@ -39,6 +39,9 @@ const view = (
 )
 
 if (inBrowser) {
+  if (process.env.DOMAIN) {
+    document.domain = process.env.DOMAIN
+  }
   new Clock(store) // eslint-disable-line no-new
   require('style!./css/main.less')
   require('./site/client').default(store, view)

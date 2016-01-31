@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
@@ -39,7 +40,7 @@ class ChatRoom extends Component {
   }
 
   renderContent() {
-    const { chat, dispatch, now } = this.props
+    const { chat, dispatch, embedData, now } = this.props
     const { roomName, users } = chat
 
     if (chat.authRequired()) {
@@ -77,7 +78,7 @@ class ChatRoom extends Component {
 
     return (
       <div className="chat-room-content">
-        <ChatPane chat={chat} dispatch={dispatch} now={now} roomName={roomName} />
+        <ChatPane chat={chat} dispatch={dispatch} embedData={embedData} now={now} roomName={roomName} />
         <UserList roomName={roomName} users={users} />
       </div>
     )
@@ -102,14 +103,16 @@ class ChatRoom extends Component {
 ChatRoom.propTypes = {
   chat: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
+  embedData: PropTypes.instanceOf(Immutable.Map()).isRequired,
   now: PropTypes.instanceOf(Date),
 }
 
 function select(state, props) {
   const { roomName } = props
   const chat = state.chatSwitch.chats.get(roomName)
+  const embedData = state.embed
   const now = state.now
-  return { chat, now }
+  return { chat, embedData, now }
 }
 
 export default connect(select)(ChatRoom)

@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 
 import { nickBgColor } from '../lib/nick'
@@ -53,11 +54,12 @@ class ChatThread extends Component {
       )
     }
 
-    const { chat, dispatch, now, pane, roomName } = this.props
+    const { chat, dispatch, embedData, now, pane, roomName } = this.props
     const renderChild = (msg, terminal) => (
       <ChatThread
         chat={chat}
         dispatch={dispatch}
+        embedData={embedData}
         key={msg.id}
         msg={msg}
         now={now}
@@ -96,13 +98,14 @@ class ChatThread extends Component {
   }
 
   renderMessage(hasChildren) {
-    const { dispatch, msg, now, roomName, terminal } = this.props
+    const { dispatch, embedData, msg, now, roomName, terminal } = this.props
     if (!msg) {
       return null
     }
     return (
       <Message
         dispatch={dispatch}
+        embedData={embedData}
         msg={msg}
         hasChildren={hasChildren}
         now={now}
@@ -137,6 +140,7 @@ class ChatThread extends Component {
 ChatThread.propTypes = {
   chat: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
+  embedData: PropTypes.instanceOf(Immutable.Map()).isRequired,
   msg: PropTypes.object,
   now: PropTypes.instanceOf(Date).isRequired,
   pane: PropTypes.instanceOf(Pane).isRequired,

@@ -276,3 +276,33 @@ z-index: 5;
     }
   }
 }
+
+.embed {
+  flex: 1 0 153px;
+
+  position: relative;
+  display: inline-block;
+  border-radius: 3px;
+  line-height: 0;
+  font-size: 0;
+  vertical-align: top;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 3px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.65) inset;
+    z-index: 10;
+  }
+
+  iframe {
+    border: none;
+    border-radius: 3px;
+    height: 153px;
+    width: 0;
+  }
+}

@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import _ from 'lodash'
 
 import {
-  EDIT_TEXT, MOVE_CURSOR,
+  EDIT_TEXT, EMBED_MESSAGE_RECEIVED, MOVE_CURSOR,
   WS_CONNECTING, WS_CONNECTED, WS_DISCONNECTED, WS_MESSAGE_RECEIVED, WS_MESSAGE_SENT,
 } from '../const'
 
@@ -246,6 +246,17 @@ export class Chat {
         return this
     }
   }
+
+  embedMessageReceived(data) {
+    const parts = data.id.split('/')
+    if (parts.length < 2 || parts[0] !== this.roomName) {
+      return this
+    }
+    const paths = id => this.tree.paths.get(id, '').split('/')
+    console.log('invalidating', paths(parts[1]))
+    const tree = this.tree.touch(...paths(parts[1]))
+    return new Chat({ ...this, tree })
+  }
 }
 
 export default function chatReducer(state = new Chat(), action) {
@@ -256,6 +267,8 @@ export default function chatReducer(state = new Chat(), action) {
   switch (action.type) {
     case EDIT_TEXT:
       return chat.setEditor(action.editor)
+    case EMBED_MESSAGE_RECEIVED:
+      return chat.embedMessageReceived(action.data)
     case MOVE_CURSOR:
       return chat.moveCursor(action.dir, action.msgId)
     case WS_CONNECTING:

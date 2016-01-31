@@ -2,6 +2,8 @@ import Immutable from 'immutable'
 import _ from 'lodash'
 import { UPDATE_LOCATION } from 'redux-simple-router'
 
+import { EMBED_MESSAGE_RECEIVED } from '../const'
+
 import chat, { Chat } from './chat'
 
 function updateLocation(state, loc) {
@@ -36,10 +38,15 @@ const initialState = {
 
 export default function chatSwitch(state = initialState, action) {
   switch (action.type) {
+    case EMBED_MESSAGE_RECEIVED:
+      return { ...state, chats: Immutable.Map(state.chats.map((v, k) => [k, chat(v, action)]).toArray()) }
     case UPDATE_LOCATION:
       const loc = action.location || action.payload
       return updateLocation(state, loc)
     default:
+      if (!action.roomName) {
+        return state
+      }
       let chatState = state.chats.get(action.roomName)
       if (!chatState) {
         chatState = new Chat()
