@@ -166,7 +166,7 @@ class SocketSwitch {
   }
 
   selectFromPath(path) {
-    const match = path.match(/((pm:)?\w+)\/?$/)
+    const match = path.match(/^\/room\/((pm:)?\w+)\/?$/)
     if (match) {
       this.select(match[1])
     }

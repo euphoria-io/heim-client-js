@@ -21,12 +21,17 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
+html, body, #app {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: @main-font;
   font-size: @base-font-size;
-  overflow: hidden;
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
 }
 
 .app-container {
@@ -66,4 +71,8 @@ time {
 
 .rooms {
   @import 'room-list';
+}
+
+#app > .embed-page {
+  @import 'embed';
 }

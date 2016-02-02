@@ -3,6 +3,11 @@ import React, { Component, PropTypes } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 class Embed extends Component {
+  _sendMessage(data) {
+    console.log('posting embed message', this.refs)
+    this.refs.iframe.contentWindow.postMessage(data, process.env.EMBED_ORIGIN)
+  }
+
   render() {
     const embedOrigin = process.env.EMBED_ORIGIN
 
@@ -16,12 +21,24 @@ class Embed extends Component {
     }
     const embedUrl = embedOrigin + '/?' + queryString.stringify(params)
 
+    const onMouseEnter = () => {
+      this._sendMessage({ type: 'unfreeze', id: this.props.embedId })
+    }
+
+    const onMouseLeave = () => {
+      this._sendMessage({ type: 'freeze', id: this.props.embedId })
+    }
+
     return (
-      <a className="embed" href={link} target="_blank">
-        <iframe
-          src={embedUrl}
-          style={{ width }}
-        />
+      <a
+        className="embed"
+        href={link}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        target="_blank"
+        style={{ flexBasis: width }}
+      >
+        <iframe ref="iframe" src={embedUrl} />
       </a>
     )
   }

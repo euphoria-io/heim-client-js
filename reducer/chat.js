@@ -248,6 +248,9 @@ export class Chat {
   }
 
   embedMessageReceived(data) {
+    if (!data.id) {
+      return this
+    }
     const parts = data.id.split('/')
     if (parts.length < 2 || parts[0] !== this.roomName) {
       return this

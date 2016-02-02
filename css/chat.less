@@ -67,6 +67,7 @@ z-index: 5;
   .content-and-time {
     flex: 1;
     line-height: 1.2em;
+    overflow: hidden;
     overflow-wrap: break-word;
   }
 
@@ -277,15 +278,23 @@ z-index: 5;
   }
 }
 
-.embed {
+.embeds {
   flex: 1 0 153px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  vertical-align: top;
+}
 
+.embed {
+  flex: 0 0 204px;
   position: relative;
-  display: inline-block;
+  display: block;
+  overflow: hidden;
   border-radius: 3px;
   line-height: 0;
   font-size: 0;
-  vertical-align: top;
 
   &:before {
     content: '';
@@ -303,6 +312,7 @@ z-index: 5;
     border: none;
     border-radius: 3px;
     height: 153px;
-    width: 0;
+    max-width: 272px;
+    width: 100%;
   }
 }

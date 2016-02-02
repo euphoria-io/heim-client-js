@@ -4,6 +4,7 @@ import { EMBED_MESSAGE_RECEIVED } from '../const'
 
 const initialState = {
   width: Immutable.Map(),
+  frozen: Immutable.Map(),
 }
 
 class EmbedState {
@@ -19,6 +20,12 @@ class EmbedState {
     const id = msg.id
 
     switch (msg.type) {
+      case 'freeze':
+        console.log('freezing', id)
+        return new EmbedState({ ...this, frozen: this.frozen.set(id, true) })
+      case 'unfreeze':
+        console.log('unfreezing', id)
+        return new EmbedState({ ...this, frozen: this.frozen.set(id, false) })
       case 'size':
         console.log('setting width of', id, 'to', msg.data)
         return new EmbedState({ ...this, width: this.width.set(id, msg.data.width) })

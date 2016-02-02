@@ -5,11 +5,12 @@ import { browserHistory, createMemoryHistory, IndexRoute, Route, Router } from '
 import App from './component/App'
 import ChatRoom from './component/ChatRoom'
 import Home from './component/Home'
+import EmbedPage from './component/EmbedPage'
 import RoomList from './component/RoomList'
 
 import Clock from './lib/Clock'
 
-import renderStaticPage from './site/server'
+import { renderStaticPage } from './site/server'
 import newStore from './site/store'
 
 const inBrowser = typeof document !== 'undefined'
@@ -30,6 +31,7 @@ bindSocket.propTypes = {
 const view = (
   <Provider store={store}>
     <Router history={history} createElement={bindSocket}>
+      <Route path="/embed/" component={EmbedPage} />
       <Route path="/" component={App}>
         <IndexRoute components={{ content: Home }} />
         <Route path="/room/:roomName" components={{ content: ChatRoom, sidebar: RoomList }} />

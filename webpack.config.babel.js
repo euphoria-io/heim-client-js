@@ -11,7 +11,7 @@ const config = {
   ],
 
   output: {
-    filename: 'main.[hash].js',
+    filename: '[name].[hash].js',
     path: path.join(__dirname, 'build'),
     libraryTarget: 'umd',
   },
@@ -56,9 +56,10 @@ const config = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.DOMAIN': JSON.stringify(process.env.DOMAIN),
-      'process.env.EMBED_ORIGIN': JSON.stringify(process.env.EMBED_ORIGIN || 'http://localhost:8081'),
+      'process.env.EMBED_ORIGIN': JSON.stringify(process.env.EMBED_ORIGIN || 'http://localhost:8080/embed'),
+      'process.env.HEIM_ORIGIN': JSON.stringify(process.env.HEIM_ORIGIN || 'http://localhost:8080'),
     }),
-    new StaticSiteGeneratorPlugin('main', ['/']),
+    new StaticSiteGeneratorPlugin('main', ['/', '/embed/']),
   ],
 }
 
