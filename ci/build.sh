@@ -19,7 +19,7 @@ fi
 npm run-script cover
 
 echo 'Building static assets'
-NODE_ENV=production EMBED_ORIGIN='https://embed.space' DOMAIN=euphoria.io node_modules/.bin/webpack
+NODE_ENV=production EMBED_ORIGIN='https://alpha.embed.space' DOMAIN=euphoria.io node_modules/.bin/webpack
 
 if [ ${DRONE_BRANCH} == master -o ${DRONE_BRANCH} == drone ]; then
   echo 'Uploading static assets'
