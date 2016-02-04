@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import _ from 'lodash'
 
 import {
-  EDIT_TEXT, EMBED_MESSAGE_RECEIVED, MOVE_CURSOR,
+  EDIT_TEXT, EMBED_MESSAGE_RECEIVED, MOVE_CURSOR, TOGGLE_ROOM_SIDEBAR,
   WS_CONNECTING, WS_CONNECTED, WS_DISCONNECTED, WS_MESSAGE_RECEIVED, WS_MESSAGE_SENT,
 } from '../const'
 
@@ -127,6 +127,33 @@ export class Chat {
 
   authFailureReason() {
     return this.auth._failureReason
+  }
+
+  getLocalStorage(key, defaultValue) {
+    return this.localStorage.get(key, defaultValue)
+  }
+
+  setLocalStorage(key, value) {
+    const localStorage = this.localStorage.set(key, value)
+    return new Chat({ ...this, localStorage })
+  }
+
+  isUserListDisplayed() {
+    return this.getLocalStorage('displayUserList', false)
+  }
+
+  toggleRoomSidebar() {
+    return this.setLocalStorage('displayUserList', !this.getLocalStorage('displayUserList', false))
+  }
+
+  userGroups() {
+    return this.users.groupBy(v => /^bot:/.test(v.id) ? 'bots' : 'people')
+  }
+
+  userList() {
+    const groups = this.userGroups()
+    const total = groups.reduce((sum, group) => sum + group.size, 0)
+    return { groups, total }
   }
 
   setEditor(editor) {
@@ -274,6 +301,8 @@ export default function chatReducer(state = new Chat(), action) {
       return chat.embedMessageReceived(action.data)
     case MOVE_CURSOR:
       return chat.moveCursor(action.dir, action.msgId)
+    case TOGGLE_ROOM_SIDEBAR:
+      return chat.toggleRoomSidebar()
     case WS_CONNECTING:
       return chat.setSocketState('connecting')
     case WS_CONNECTED:

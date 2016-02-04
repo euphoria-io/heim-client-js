@@ -1,5 +1,7 @@
 import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
+
 import { nickBgColor } from '../lib/nick'
 
 import UserText from './UserText'
@@ -24,10 +26,9 @@ class UserList extends Component {
 
   render() {
     const { users } = this.props
-    if (!users) {
+    if (!users.total) {
       return null
     }
-    const groups = users.groupBy(v => /^bot:/.test(v.id) ? 'bots' : 'people')
 
     function uniqSeq(list) {
       if (!list) {
@@ -52,16 +53,21 @@ class UserList extends Component {
 
     return (
       <div className="users">
-        {this.renderUserList('people', uniqSeq(groups.get('people')))}
-        {this.renderUserList('bots', uniqSeq(groups.get('bots')))}
+        {this.renderUserList('people', uniqSeq(users.groups.get('people')))}
+        {this.renderUserList('bots', uniqSeq(users.groups.get('bots')))}
       </div>
     )
   }
 }
 
+UserList.mixins = [PureRenderMixin]
+
 UserList.propTypes = {
   roomName: PropTypes.string.isRequired,
-  users: PropTypes.instanceOf(Immutable.Map).isRequired,
+  users: PropTypes.shape({
+    groups: PropTypes.object.isRequired,
+    total: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default UserList

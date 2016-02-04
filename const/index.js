@@ -5,6 +5,7 @@ export const EMBED_MESSAGE_RECEIVED = Action('EMBED_MESSAGE_RECEIVED')
 export const MOVE_CURSOR = Action('MOVE_CURSOR')
 export const SEND_PACKET = Action('SEND_PACKET')
 export const TICK = Action('TICK')
+export const TOGGLE_ROOM_SIDEBAR = Action('TOGGLE_ROOM_SIDEBAR')
 
 export const WS_CONNECTING = Action('WS_CONNECTING')
 export const WS_CONNECTED = Action('WS_CONNECTED')

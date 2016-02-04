@@ -39,9 +39,9 @@ class ChatRoom extends Component {
     }
   }
 
-  renderContent() {
+  renderContent(users) {
     const { chat, dispatch, embedData, now } = this.props
-    const { roomName, users } = chat
+    const { roomName } = chat
 
     if (chat.authRequired()) {
       const pending = chat.authPending()
@@ -76,25 +76,37 @@ class ChatRoom extends Component {
       )
     }
 
+    const userList = <UserList roomName={roomName} users={users} />
+
     return (
       <div className="chat-room-content">
         <ChatPane chat={chat} dispatch={dispatch} embedData={embedData} now={now} roomName={roomName} />
-        <UserList roomName={roomName} users={users} />
+        <div className="room-sidebar">
+          {chat.isUserListDisplayed() ? userList : null}
+        </div>
       </div>
     )
   }
 
   render() {
-    const { chat } = this.props
+    const { chat, dispatch } = this.props
     if (!chat) {
       return null
     }
 
     const { roomName, socketState } = chat
+    const users = chat.userList()
+
     return (
       <div className="chat-room">
-        <Connection roomName={roomName} socketState={socketState} />
-        {this.renderContent()}
+        <Connection
+          dispatch={dispatch}
+          roomName={roomName}
+          sidebarActivated={chat.isUserListDisplayed()}
+          socketState={socketState}
+          users={users}
+        />
+        {this.renderContent(users)}
       </div>
     )
   }
