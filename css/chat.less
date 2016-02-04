@@ -96,19 +96,20 @@ z-index: 5;
       flex-direction: column;
 
       background-color: @bg4;
+      background-image: data-uri('../res/triangle.svg');
+      background-position: center center;
+      background-size: 0.8rem 0.8rem;
+      background-repeat: no-repeat;
+      transform: scaleY(-1);
 
       div {
         flex: 1;
-        //background-color: black;
-        background-image: data-uri('../res/triangle.svg');
-        background-position: center center;
-        background-size: 0.8rem 0.8rem;
-        background-repeat: no-repeat;
-        transform: scaleY(-1);
+        background-color: @bg4;
+        mix-blend-mode: hue;
       }
     }
 
-    &.activated .handle div {
+    &.activated .handle {
       transform: none;
     }
   }
