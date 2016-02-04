@@ -10,7 +10,6 @@ export default class Pane extends Component {
   }
 
   componentDidMount() {
-    console.log('pane did mount')
     if (typeof window !== 'undefined') {
       const Mousetrap = require('mousetrap')
       this._mousetrap = Mousetrap(ReactDOM.findDOMNode(this))
@@ -38,6 +37,14 @@ export default class Pane extends Component {
   unbindKey(key, handler) {
     if (this._mousetrap) {
       this._mousetrap.unbind(key, handler)
+    }
+  }
+
+  reset() {
+    if (this._mousetrap) {
+      this._mousetrap.reset()
+      this._mousetrap = null
+      this._prebindings = {}
     }
   }
 }

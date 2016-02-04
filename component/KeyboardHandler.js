@@ -16,7 +16,7 @@ class KeyboardHandler extends Component {
 
   render() {
     return (
-      <div onKeyDown={this.onKeyDown} {...this.props}>
+      <div {...this.props}>
         {this.props.children}
       </div>
     )
