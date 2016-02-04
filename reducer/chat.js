@@ -72,7 +72,7 @@ class Editor {
   }
 
   up(tree) {
-    const msgId = tree.precedingParent(this.parentId)
+    const msgId = tree.precedingParent(this.parentId || null)
     if (msgId !== null) {
       return new Editor({ ...this, parentId: msgId })
     }
