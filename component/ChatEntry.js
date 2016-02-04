@@ -13,6 +13,7 @@ class ChatEntry extends Component {
     const send = ev => {
       const value = ev.target.value
       ev.preventDefault()
+      ev.stopPropagation()
       if (!value.length) {
         return
       }
@@ -48,7 +49,7 @@ class ChatEntry extends Component {
     }
 
     return (
-      <div className="chat-entry">
+      <div key={`chat-entry-${roomName}`} className="chat-entry">
         <KeyboardHandler id={id} className="chat-entry-row" listenTo={pane} keys={{
           escape: move('top'),
           up: move('up'),
