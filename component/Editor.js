@@ -13,9 +13,13 @@ const initialState = {
 
 class Editor extends Component {
   componentDidMount() {
-    this.resize()
+    const { editorState } = this.props
     const el = ReactDOM.findDOMNode(this.refs.input)
+    this.resize()
     el.focus()
+    el.setSelectionRange(editorState.selectionStart, editorState.selectionEnd, editorState.selectionDirection)
+    el.addEventListener('keyup', ev => this._dispatch(ev.target))
+    el.addEventListener('select', ev => this._dispatch(ev.target))
   }
 
   resize() {
@@ -25,21 +29,31 @@ class Editor extends Component {
     input.style.height = measure.scrollHeight + 'px'
   }
 
+  dispatch() {
+    return this._dispatch(ReactDOM.findDOMNode(this.refs.input))
+  }
+
+  _dispatch(el) {
+    const { dispatch, editorState, roomName } = this.props
+    dispatch({
+      type: EDIT_TEXT,
+      roomName,
+      editor: {
+        parentId: editorState.parentId,
+        selectionDirection: el.selectionDirection,
+        selectionEnd: el.selectionEnd,
+        selectionStart: el.selectionStart,
+        value: el.value,
+      },
+    })
+  }
+
   render() {
-    const { dispatch, editorId, roomName } = this.props
+    const { editorId } = this.props
     const editorState = this.props.editorState || initialState
     const onChange = ev => {
       this.resize()
-      dispatch({
-        type: EDIT_TEXT,
-        roomName,
-        editor: {
-          selectionDirection: ev.target.selectionDirection,
-          selectionEnd: ev.target.selectionEnd,
-          selectionStart: ev.target.selectionStart,
-          value: ev.target.value,
-        },
-      })
+      this._dispatch(ev.target)
     }
     const onClick = onChange
 
@@ -50,9 +64,6 @@ class Editor extends Component {
           defaultValue={editorState.value}
           onChange={onChange}
           onClick={onClick}
-          selectionDirection={editorState.selectionDirection}
-          selectionEnd={editorState.selectionEnd}
-          selectionStart={editorState.selectionStart}
         />
         <textarea ref="measure" className="measure" />
       </div>

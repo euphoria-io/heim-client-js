@@ -59,6 +59,8 @@ class Editor {
         return this.down(state.tree)
       case 'left':
         return this.left(state.tree)
+      case 'right':
+        return this.top()
       default:
         if (parentId !== undefined) {
           return new Editor({ ...this, parentId })
@@ -157,18 +159,25 @@ export class Chat {
   }
 
   setEditor(editor) {
-    return new Chat({ ...this, editor: new Editor(editor) })
+    let value = editor
+    if (!(value instanceof Editor)) {
+      value = new Editor(value)
+    }
+    return this.touchEditor(value)
+  }
+
+  touchEditor(newEditor) {
+    const paths = id => this.tree.paths.get(id, '').split('/')
+    let touched = paths(this.editor.parentId)
+    if (this.editor.parentId !== newEditor.parentId) {
+      touched = touched.concat(paths(newEditor.parentId))
+    }
+    const tree = this.tree.touch(...touched)
+    return new Chat({ ...this, editor: newEditor, tree })
   }
 
   moveCursor(dir, msgId) {
-    const editor = this.editor.move(this, dir, msgId)
-    const paths = id => this.tree.paths.get(id, '').split('/')
-    let touched = paths(this.editor.parentId)
-    if (this.editor.parentId !== editor.parentId) {
-      touched = touched.concat(paths(editor.parentId))
-    }
-    const tree = this.tree.touch(...touched)
-    return new Chat({ ...this, editor, tree })
+    return this.setEditor(this.editor.move(this, dir, msgId))
   }
 
   setSocketState(socketState) {
@@ -233,24 +242,26 @@ export class Chat {
     return new Chat({ ...newChat, auth, nick, fetching: false })
   }
 
-  messageReceived(packet) {
-    switch (packet.type) {
+  messageReceived({ type, data }) {
+    switch (type) {
       case 'auth-reply':
-        return this.authReply(packet.data)
+        return this.authReply(data)
       case 'bounce-event':
-        return this.bounceEvent(packet.data)
+        return this.bounceEvent(data)
       case 'join-event':
-        return this.addUser(packet.data)
+        return this.addUser(data)
       case 'log-reply':
-        return this.logReply(packet.data)
+        return this.logReply(data)
       case 'part-event':
-        return this.removeUser(packet.data.session_id)
+        return this.removeUser(data.session_id)
       case 'send-event':
-        return this.addMessage(packet.data)
+        return this.addMessage(data)
       case 'send-reply':
-        return this.addMessage(packet.data)
+        return this
+          .addMessage(data)
+          .setEditor({ ...this.editor, parentId: data.parent || data.id })
       case 'snapshot-event':
-        return this.snapshotEvent(packet.data)
+        return this.snapshotEvent(data)
       default:
         return this
     }
@@ -267,8 +278,7 @@ export class Chat {
       case 'log':
         return new Chat({ ...this, fetching: true })
       case 'send':
-        // TODO: maintain editor parent
-        return new Chat({ ...this, editor: new Editor() })
+        return this.setEditor({ parentId: this.editor.parentId })
       default:
         return this
     }
@@ -283,7 +293,6 @@ export class Chat {
       return this
     }
     const paths = id => this.tree.paths.get(id, '').split('/')
-    console.log('invalidating', paths(parts[1]))
     const tree = this.tree.touch(...paths(parts[1]))
     return new Chat({ ...this, tree })
   }

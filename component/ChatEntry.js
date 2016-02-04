@@ -31,10 +31,11 @@ class ChatEntry extends Component {
     }
 
     const move = dir => ev => {
-      if (dir === 'left' && editor.value !== '') {
+      const current = this.refs.editor.props.editorState
+      if ((dir === 'left' || dir === 'right') && current.value !== '') {
         return
       }
-      if ((dir === 'up' || dir === 'down') && /\n/.test(editor.value)) {
+      if ((dir === 'up' || dir === 'down') && /\n/.test(current.value)) {
         return
       }
 
@@ -55,14 +56,14 @@ class ChatEntry extends Component {
           up: move('up'),
           down: move('down'),
           left: move('left'),
-          right: move('top'),
+          right: move('right'),
           enter: send,
         }}
         >
           <div className="sender">
             <Nick name={nick || 'your name here'} />
           </div>
-          <Editor dispatch={dispatch} editorId="main" editorState={editor} roomName={roomName} />
+          <Editor ref="editor" dispatch={dispatch} editorId="main" editorState={editor} roomName={roomName} />
         </KeyboardHandler>
       </div>
     )

@@ -16,6 +16,10 @@ class ChatThread extends Component {
       return true
     }
 
+    if (!msg && chat.editor !== nextProps.chat.editor) {
+      return true
+    }
+
     // Look for changes under descendants of this thread's root message.
     const prefix = msg ? tree.paths.get(msg.id) : ''
     const filter = path => path.startsWith(prefix)
