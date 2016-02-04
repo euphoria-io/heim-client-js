@@ -124,7 +124,7 @@ test('chat', t => {
 
     state = chatSwitch(state, sendPacket('send'))
     t.deepEqual(editor(), {
-      parentId: null,
+      parentId: 'A',
       selectionDirection: 'forward',
       selectionStart: 0,
       selectionEnd: 0,

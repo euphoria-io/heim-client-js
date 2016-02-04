@@ -278,7 +278,7 @@ export class Chat {
       case 'log':
         return new Chat({ ...this, fetching: true })
       case 'send':
-        return this.setEditor({ parentId: this.editor.parentId })
+        return this.setEditor({ ...initialEditorState, parentId: this.editor.parentId })
       default:
         return this
     }
