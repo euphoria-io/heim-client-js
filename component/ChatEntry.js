@@ -17,6 +17,7 @@ class ChatEntry extends Component {
       if (!value.length) {
         return
       }
+      this.refs.editor.reset()
       dispatch({
         type: SEND_PACKET,
         roomName,

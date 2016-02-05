@@ -29,6 +29,11 @@ class Editor extends Component {
     input.style.height = measure.scrollHeight + 'px'
   }
 
+  reset() {
+    const el = ReactDOM.findDOMNode(this.refs.input)
+    el.value = ''
+  }
+
   dispatch() {
     return this._dispatch(ReactDOM.findDOMNode(this.refs.input))
   }
