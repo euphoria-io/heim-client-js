@@ -48,9 +48,9 @@ class Message extends Component {
     // imgur embeds
     content = content.replace(
       /(?:https?:\/\/)?(?:www\.|i\.|m\.)?imgur\.com\/(\w+)(\.\w+)?(\S*)/g,
-      (match, id, ext, rest, offset, string) => {
+      (match, id, ext, rest) => {
         if (rest) {
-          return string
+          return match
         }
         return addEmbed(id, {
           kind: 'imgur',
