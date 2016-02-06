@@ -19,7 +19,7 @@ z-index: 5;
   align-items: stretch;
 
   background: @bg1;
-  border-top: 0.5rem solid @fg0;
+  border-top: @topborder-height solid @fg0;
   border-bottom: 1px solid #c5cbd0;
   z-index: 10;
 
@@ -91,14 +91,14 @@ z-index: 5;
     }
 
     .handle {
-      flex: 0 0 1.6rem;
+      flex: 0 0 26px;
       display: flex;
       flex-direction: column;
 
       background-color: @bg4;
       background-image: data-uri('../res/triangle.svg');
       background-position: center center;
-      background-size: 0.8rem 0.4rem;
+      background-size: 20px 10px;
       background-repeat: no-repeat;
       transform: scaleY(-1);
 
@@ -127,7 +127,7 @@ z-index: 5;
 }
 
 .nick {
-  line-height: 1.2em;
+  line-height: 1.2;
   margin-right: @nick-horizontal-padding;
 }
 
@@ -140,7 +140,7 @@ z-index: 5;
 
   .content-and-time {
     flex: 1;
-    line-height: 1.2em;
+    line-height: 1.2;
     overflow: hidden;
     overflow-wrap: break-word;
   }
@@ -160,11 +160,10 @@ z-index: 5;
 
     .content-and-time {
       .content {
-        @scale: 0.9;
+        @scale: 0.8;
+        @vpadding1: calc((1-@scale)*@base-font-size ~"+" @nick-vertical-padding);
         font-size: @scale*1rem;
-        padding: @nick-vertical-padding @nick-horizontal-padding 0 @nick-horizontal-padding;
-        line-height: 1.2em/@scale;
-        margin-bottom: -0.1rem;
+        padding: @vpadding1 @nick-horizontal-padding @nick-vertical-padding @nick-horizontal-padding;
       }
     }
   }
