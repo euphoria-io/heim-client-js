@@ -136,7 +136,6 @@ z-index: 5;
   flex-flow: row nowrap;
   align-items: flex-start;
   overflow: hidden;
-  padding-bottom: 1px; // to keep descenders in multiline messages from getting cut off
 
   .content-and-time {
     flex: 1;
@@ -148,7 +147,7 @@ z-index: 5;
   .content {
     display: inline-block;
     padding-top: @nick-vertical-padding;
-    padding-bottom: 1px;
+    padding-bottom: 1pt; // to keep descenders in multiline messages from getting cut off
   }
 
   &.emote {
