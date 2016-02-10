@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { SEND_PACKET } from '../const'
 
 import ChatPane from './ChatPane'
-import Connection from './Connection'
+import RoomHeader from './RoomHeader'
 import UserList from './UserList'
 
 class ChatRoom extends Component {
@@ -99,7 +99,7 @@ class ChatRoom extends Component {
 
     return (
       <div className="chat-room">
-        <Connection
+        <RoomHeader
           dispatch={dispatch}
           roomName={roomName}
           sidebarActivated={chat.isUserListDisplayed()}

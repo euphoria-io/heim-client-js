@@ -4,7 +4,7 @@ import { TOGGLE_ROOM_SIDEBAR } from '../const'
 
 import UserSummary from './UserSummary'
 
-class Connection extends Component {
+class RoomHeader extends Component {
   render() {
     const { dispatch, roomName, sidebarActivated, users } = this.props
     const toggleRoomSidebar = () => dispatch({
@@ -14,7 +14,7 @@ class Connection extends Component {
     const userSummary = <UserSummary users={users} />
     const sidebarClassName = sidebarActivated ? 'room-sidebar activated' : 'room-sidebar'
     return (
-      <div className="connection">
+      <div className="room-header">
         <div className="room">
           <div className="spacer" />
           <div className="room-details">
@@ -40,7 +40,7 @@ class Connection extends Component {
   }
 }
 
-Connection.propTypes = {
+RoomHeader.propTypes = {
   dispatch: PropTypes.func.isRequired,
   roomName: PropTypes.string.isRequired,
   sidebarActivated: PropTypes.bool.isRequired,
@@ -51,4 +51,4 @@ Connection.propTypes = {
   }).isRequired,
 }
 
-export default Connection
+export default RoomHeader
