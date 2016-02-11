@@ -190,7 +190,6 @@ z-index: 5;
           .chat-entry-row {
             margin-left: -@thread-indent;
             padding-left: @thread-indent;
-            padding-bottom: 0;
           }
         }
 
@@ -220,17 +219,16 @@ z-index: 5;
     flex-flow: row wrap;
     align-items: top;
     margin-left: -@nick-horizontal-padding;
-    padding-left: @nick-horizontal-padding;
-    padding-bottom: @nick-vertical-padding;
+    padding: @nick-vertical-padding @nick-horizontal-padding @nick-vertical-padding 0;
   }
 
   .nick {
-    margin-top: @message-spacing;
     flex: 0;
   }
 
   .editor {
     flex: 1;
+    line-height: 0;
   }
 
   textarea {
@@ -238,9 +236,9 @@ z-index: 5;
     resize: none;
     font-family: @main-font;
     font-size: @base-font-size;
-    height: 1.6em;
-    padding: 0 0 0 0;
-    margin-top: @message-spacing;
+    height: 15px;
+    line-height: 1.2;
+    padding: @nick-vertical-padding 0 0 0;
     width: 100%;
 
     &:focus {
