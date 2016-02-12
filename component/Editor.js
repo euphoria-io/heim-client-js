@@ -24,8 +24,9 @@ class Editor extends Component {
 
   resize() {
     const { input, measure } = this.refs
+    const val = input.value
     measure.style.width = input.offsetWidth + 'px'
-    measure.value = input.value
+    measure.value = input.value || '.'
     input.style.height = measure.scrollHeight + 'px'
   }
 
