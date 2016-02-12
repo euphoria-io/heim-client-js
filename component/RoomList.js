@@ -7,10 +7,11 @@ import Link from './Link'
 import Timestamp from './Timestamp'
 
 function RoomList({ now, push, chatSwitch }) {
-  function renderRoom(roomName, room) {
+  function renderRoom(roomName, room, isCurrent) {
     const href = `/room/${roomName}/`
+    const className = isCurrent ? 'room current' : 'room'
     return (
-      <div key={roomName} className="room">
+      <div key={roomName} className={className}>
         <Link push={push} to={href}>{roomName}</Link>
         <Timestamp at={moment.unix(room.localStorage.get('lastActive'))} now={now} />
       </div>
@@ -25,7 +26,7 @@ function RoomList({ now, push, chatSwitch }) {
         {chatSwitch.chats
           .sortBy((room, roomName) => roomName)
           .entrySeq()
-          .map(entry => renderRoom(entry[0], entry[1]))}
+          .map(entry => renderRoom(entry[0], entry[1], entry[0] === chatSwitch.currentRoom))}
       </div>
     </div>
   )
