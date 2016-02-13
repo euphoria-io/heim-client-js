@@ -12,9 +12,8 @@ z-index: 1;
   z-index: 10;
 }
 
-.room, h1 {
+a, h1 {
   padding-left: 2rem;
-  padding-right: 2rem;
 }
 
 time {
@@ -25,8 +24,10 @@ time {
   font-size: 1.2rem;
 
   .room {
+    display: flex;
+    align-items: center;
     line-height: 1.8em;
-    margin-right: 0.5em;
+    margin-right: 8px;
 
     &.current {
       background: @current-room-background;
@@ -36,8 +37,23 @@ time {
   }
 
   a {
+    flex: 1;
+    display: block;
     color: black;
     font-weight: 400;
     text-decoration: none;
+  }
+
+  svg {
+    position: relative;
+    right: -10px;
+    fill: #d95d3f;
+    stroke-width: 0;
+    height: 21px;
+    cursor: pointer;
+
+    .outline {
+      fill: @bg0;
+    }
   }
 }

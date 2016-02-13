@@ -176,6 +176,10 @@ export class Chat {
     return new Chat({ ...this, editor: newEditor, tree })
   }
 
+  visit(now = undefined) {
+    return this.setLocalStorage('lastVisited', now || new Date())
+  }
+
   moveCursor(dir, msgId) {
     return this.setEditor(this.editor.move(this, dir, msgId))
   }

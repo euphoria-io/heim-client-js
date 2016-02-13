@@ -1,23 +1,29 @@
-import moment from 'moment'
 import React from 'react'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 
+import ActivityIndicator from './ActivityIndicator'
 import Link from './Link'
-import Timestamp from './Timestamp'
 
-function RoomList({ now, push, chatSwitch }) {
+function RoomList({ push, chatSwitch }) {
   function renderRoom(roomName, room, isCurrent) {
     const href = `/room/${roomName}/`
+    const lastActive = room.localStorage.get('lastActive')
+    const lastVisited = room.localStorage.get('lastVisited')
+    const isActive = !!lastActive && (!lastVisited || lastActive > lastVisited)
+    const activityIndicator = isActive ? <ActivityIndicator push={push} to={href} /> : null
     const className = isCurrent ? 'room current' : 'room'
     return (
       <div key={roomName} className={className}>
-        <Link push={push} to={href}>{roomName}</Link>
-        <Timestamp at={moment.unix(room.localStorage.get('lastActive'))} now={now} />
+        <Link push={push} to={href}>
+          {roomName}
+        </Link>
+        {activityIndicator}
       </div>
     )
   }
 
+  console.log('re-rendering roomlist')
   return (
     <div className="rooms">
       <div className="bar" />
@@ -32,8 +38,8 @@ function RoomList({ now, push, chatSwitch }) {
   )
 }
 
-function select({ chatSwitch, now }) {
-  return { chatSwitch, now }
+function select({ chatSwitch }) {
+  return { chatSwitch }
 }
 
 export default connect(select, routeActions)(RoomList)
